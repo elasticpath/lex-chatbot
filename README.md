@@ -17,15 +17,28 @@ This document is not a primer for JavaScript and is intended for professionals w
 ### Prerequisites
 Ensure the following technologies have been installed:
 
-*[Git](https://git-scm.com/downloads)
-*[Node.js](https://nodejs.org/en/download/)
+* [Git](https://git-scm.com/downloads)
+* [Node.js](https://nodejs.org/en/download/)
+* A valid [Amazon Web Services (AWS) Account](https://us-west-2.console.aws.amazon.com/console/)
+* A valid [Amazon Developer Account](https://developer.amazon.com/)
+
+### Setting Up the Lambda Function
+1. Clone or pull the `lex-chatbot` repository.
+2. Navigate to the `ep-lambda-function` directory
+3. Zip up the contents of the current directory, including the node_modules folder
+4. In the Amazon Lambda Console, create a new Function.
+5. Select Author From Scratch template.
+6. Choose `Node.js 10.x` as the runtime language.
+7. Under the Function Code pane, change Code Entry Type to "Upload a .zip folder".
+8. Upload the `lex-chatbot-lambda/code.zip`
+
+-- TBD - Lambda Environment variables
+
+9. Save the function
+10. Make note of the Lambda function's ARN
 
 ### Setting Up the Lex Model
---
-
-### Setting Up the Lambda
---
-
+1. Clone or pull the `lex-chatbot` repository.
 
 ## Terms And Conditions
 - Any changes to this project must be reviewed and approved by the repository owner. For more information about contributing, see the [Contribution Guide](https://github.com/elasticpath/facebook-chat/blob/master/.github/CONTRIBUTING.md).

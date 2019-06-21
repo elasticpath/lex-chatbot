@@ -13,7 +13,7 @@
         "version": "6",
         "fulfillmentActivity": {
           "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:348718632425:function:SteveLambda",
+            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
             "messageVersion": "1.0"
           },
           "type": "CodeHook"
@@ -32,7 +32,7 @@
         "version": "4",
         "fulfillmentActivity": {
           "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:348718632425:function:SteveLambda",
+            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
             "messageVersion": "1.0"
           },
           "type": "CodeHook"
@@ -76,7 +76,7 @@
         "version": "22",
         "fulfillmentActivity": {
           "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:348718632425:function:SteveLambda",
+            "uri": "arn:aws:lambda:us-west-2:348718632425:function:EPConversationalLambda",
             "messageVersion": "1.0"
           },
           "type": "CodeHook"
@@ -125,7 +125,7 @@
         "version": "2",
         "fulfillmentActivity": {
           "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:348718632425:function:SteveLambda",
+            "uri": "arn:aws:lambda:us-west-2:348718632425:function:EPConversationalLambda",
             "messageVersion": "1.0"
           },
           "type": "CodeHook"
@@ -142,7 +142,7 @@
         "version": "5",
         "fulfillmentActivity": {
           "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:348718632425:function:SteveLambda",
+            "uri": "arn:aws:lambda:us-west-2:348718632425:function:EPConversationalLambda",
             "messageVersion": "1.0"
           },
           "type": "CodeHook"
@@ -162,7 +162,7 @@
         "version": "39",
         "fulfillmentActivity": {
           "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:348718632425:function:SteveLambda",
+            "uri": "arn:aws:lambda:us-west-2:348718632425:function:EPConversationalLambda",
             "messageVersion": "1.0"
           },
           "type": "CodeHook"
@@ -197,7 +197,7 @@
         "version": "3",
         "fulfillmentActivity": {
           "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:348718632425:function:LambaForLex",
+            "uri": "arn:aws:lambda:us-west-2:348718632425:function:EPConversationalLambda",
             "messageVersion": "1.0"
           },
           "type": "CodeHook"
@@ -210,7 +210,7 @@
         ],
         "slots": [],
         "dialogCodeHook": {
-          "uri": "arn:aws:lambda:us-west-2:348718632425:function:EPCortexLambda",
+          "uri": "arn:aws:lambda:us-west-2:348718632425:function:EPConversationalLambda",
           "messageVersion": "1.0"
         }
       },
@@ -219,7 +219,7 @@
         "version": "5",
         "fulfillmentActivity": {
           "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:348718632425:function:SteveLambda",
+            "uri": "arn:aws:lambda:us-west-2:348718632425:function:EPConversationalLambda",
             "messageVersion": "1.0"
           },
           "type": "CodeHook"
@@ -243,7 +243,7 @@
         "version": "8",
         "fulfillmentActivity": {
           "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:348718632425:function:SteveLambda",
+            "uri": "arn:aws:lambda:us-west-2:348718632425:function:EPConversationalLambda",
             "messageVersion": "1.0"
           },
           "type": "CodeHook"
