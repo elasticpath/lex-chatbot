@@ -1,2 +1,2 @@
-# lex-chatbot
+# EP Conversational Interface
 EP Conversational Interface
