@@ -68,14 +68,17 @@ The EP Conversational Interface utilizes a simple amazon-hosted noSQL database i
 8. Locate and upload the newly zipped folder.
 
 9. Under Environment Variables, add and set the following values:
-    * CACHE_TABLE:    DynamoCache
-    * GUID:           036e45fe-7003-4b9a-99f3-1c14944bf728
-    * SCOPE:          VESTRI
-    * CORTEX_URL:     http://reference.epdemos.com/cortex
-    * ROLE:           REGISTERED
-    * GRANT_TYPE:     password
-    * USERNAME:       jeff.wasty@elasticpath.com
-    * PASSWORD:       AlexaTest123
+
+| Key            | Value                        |
+| -------------- | ---------------------------- |
+| CACHE_TABLE | DynamoCache |
+| GUID | 036e45fe-7003-4b9a-99f3-1c14944bf728 |
+| SCOPE | VESTRI |
+| CORTEX_URL | http://reference.epdemos.com/cortex |
+| ROLE | REGISTERED |
+| GRANT_TYPE | password |
+| USERNAME | jeff.wasty@elasticpath.com |
+| PASSWORD | AlexaTest123 |
 
 10. Save the function.
 
