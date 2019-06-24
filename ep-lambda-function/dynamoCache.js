@@ -36,6 +36,7 @@ async function fetch() {
     };
     try {
         let data = await dynamoDB.get(params).promise();
+        console.log("In dynamoCache.js, fetching from Dynamo.");
         const response = {
             isCart: data.Item.isCart,
             curProduct: JSON.parse(data.Item.curProduct),
@@ -45,6 +46,7 @@ async function fetch() {
 
         return { response };
     } catch(error) {
+        console.log("Error in dynamoCache.js, returning status 400");
         return {
             statusCode: 400,
             error: `Could not fetch: ${error.stack}`

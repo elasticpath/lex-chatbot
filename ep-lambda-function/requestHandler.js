@@ -10,6 +10,8 @@ async function handleSearchByKeyword(event) {
     }
     try {
         let result = await cortexInstance.getItemsByKeyword(event.currentIntent.slots.searchKeyword);
+        console.log("In request hander.js");
+        console.log(JSON.stringify(result));
         const cacheEntry = {
             curResponse: JSON.stringify(result),
             curProduct: JSON.stringify(result[0]),
