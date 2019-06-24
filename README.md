@@ -2,14 +2,14 @@
 This document exists as a work in progress, and will be continually expanded as more information becomes available.
 
 ## Table Of Contents
-Documentation Introduction
-Overview
-    Prerequisites
-    Setting up DynamoDB
-    Setting up the Lambda
-    Setting up IAM roles
-    Setting up the Lex Model
-Terms & Conditions
+* Documentation Introduction
+* Overview
+    * Prerequisites
+    * Setting up DynamoDB
+    * Setting up the Lambda
+    * Setting up IAM roles
+    * Setting up the Lex Model
+* Terms & Conditions
 
 ## Documentation Introduction
 The EP Conversational Interface is an AWS Lex-based model that allows flexible deployment to a variety of conversational interfaces, including Facebook Messenger and Slack. This model communicates with Elastic Path's RESTful API, Cortex API, to leverage the e-commerce capabilities provided by Elastic Path.
