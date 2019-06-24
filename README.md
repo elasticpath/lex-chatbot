@@ -123,10 +123,10 @@ This step of the setup is the most involved, but at it's core it simply allows t
 
 The Lambda Deployment Package lives under `./ep-lambda-function`.
 
-You will find the Lex Models under `./models`. There are currently two available.
+You will find the Lex Models under `./ep-lex-models`. There are currently two available.
 
-    `lex-model.json`: The full model with lambda dependencies. May cause permission-related errors upon initial import.
-    `lex-model_noLambdaAlternative`: The full model, but lambda's must be linked to each intent manually.
+* `lex-model.json`: The full model with lambda dependencies. May cause permission-related errors upon initial import.
+* `lex-model_blank.json`: The full model, but lambda's must be linked to each intent manually.
 
 For more information on the Lex Model, visit the [Lex Developer Documentation](https://docs.aws.amazon.com/lex/latest/dg/import-export.html)
 
