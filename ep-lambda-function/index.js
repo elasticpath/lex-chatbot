@@ -44,9 +44,6 @@ exports.handler = async (event, context, callback) => {
             case ElasticPathIntents.GET_CART:
                 await GetCartHandler(event, (response) => {callback(null, response);}, sessionCart);
                 break;
-            case ElasticPathIntents.DESCRIBE_LISTED_PRODUCT:
-                await DescribeListedProductHandler(event, (response) => {callback(null, response);});
-                break;
             case ElasticPathIntents.DESCRIBE_PRODUCT:
                 await DescribeProductHandler(event, (response) => {callback(null, response);});
                 break;

@@ -24,21 +24,32 @@ Ensure the following technologies have been installed:
 
 ### Setting Up the Lambda Function
 1. Clone or pull the `lex-chatbot` repository.
-2. Navigate to the `ep-lambda-function` directory
-3. Zip up the contents of the current directory, including the node_modules folder
-4. In the Amazon Lambda Console, create a new Function.
+2. Navigate to the `ep-lambda-function` directory.
+3. Zip up the contents of the current directory, including the `node_modules` folder.
+4. In the Amazon Lambda Console, create a new Function called `EPConversationalLambda`.
 5. Select Author From Scratch template.
 6. Choose `Node.js 10.x` as the runtime language.
 7. Under the Function Code pane, change Code Entry Type to "Upload a .zip folder".
-8. Upload the `lex-chatbot-lambda/code.zip`
-
--- TBD - Lambda Environment variables
-
-9. Save the function
-10. Make note of the Lambda function's ARN
+8. Upload the newly zipped folder.
+9. Under Environment Variables, add and set the following values:
+  * CACHE_TABLE:    lex-cache
+  * CORTEX_URL:     http://reference.epdemos.com/cortex
+  * GRANT_TYPE:     password
+  * GUID:           036e45fe-7003-4b9a-99f3-1c14944bf728
+  * PASSWORD:       AlexaTest123
+  * ROLE:           REGISTERED
+  * SCOPE:          VESTRI
+  * USERNAME:       jeff.wasty@elasticpath.com
+10. Save the function.
 
 ### Setting Up the Lex Model
 1. Clone or pull the `lex-chatbot` repository.
+2. Send the `lex-model.json` file to a zip folder.
+3. Navigate to the Amazon Lex console to view your bots.
+  * NOTE: You must have at least one bot available in order to import an existing model.
+            Simply create one of the pre-existing bots as a sample to access this feature.
+4. Under the `Actions` dropdown, select "Import".
+5. Upload the `lex-model.zip` file.
 
 ## Terms And Conditions
 - Any changes to this project must be reviewed and approved by the repository owner. For more information about contributing, see the [Contribution Guide](https://github.com/elasticpath/facebook-chat/blob/master/.github/CONTRIBUTING.md).
