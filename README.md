@@ -114,7 +114,7 @@ This step of the setup is the most involved, but at it's core it simply allows t
 ### Setting Up the Lex Model
 1. Clone or pull the `lex-chatbot` repository.
 
-2. Send the `lex-model.json` file to a zip folder.
+2. Send the `lex-model_blank.json` file to a zip folder.
 
 3. Navigate to the Amazon Lex console to view your bots.
     * <b>NOTE</b>: You must have at least one bot available in order to import an existing model.
@@ -122,7 +122,11 @@ This step of the setup is the most involved, but at it's core it simply allows t
 
 4. Under the `Actions` dropdown, select "Import".
 
-5. Upload the `lex-model.zip` file.
+5. Upload the `lex-model_blank.zip` file.
+
+6. Set the Fulfillment logic to `AWS Lambda function`, and select your function in the dropdown. Save the Intent.
+
+7. Complete step 6 for each Intent.
 
 ## Project Structure
 
