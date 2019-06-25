@@ -1,0 +1,19 @@
+{
+  "name": "elastic-path-lex-model",
+  "version": "1.0.0",
+  "description": "Elastic Path Reference Lex Model",
+  "scripts": {
+    "start": "./node_modules/.bin/lex-model-local"
+  },
+  "dependencies": {
+    "ask-sdk-core": "^2.3.0",
+    "ask-sdk-model": "^1.11.0",
+    "request": "^2.87.0",
+    "request-promise-native": "^1.0.5"
+  },
+  "devDependencies": {
+    "alexa-skill-local": "^1.3.0",
+    "eslint": "^5.16.0",
+    "eslint-config-node": "^4.0.0"
+  }
+}

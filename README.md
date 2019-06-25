@@ -55,32 +55,34 @@ The EP Conversational Interface utilizes a simple amazon-hosted noSQL database i
 
 2. Navigate to the `ep-lambda-function` directory.
 
-3. Zip up the contents of the current directory, including the `node_modules` folder.
+3. Open a command prompt in the current directory and run `npm install`.
 
-4. In the Amazon Lambda Console, create a new Function called `EPConversationalLambda`.
+4. Zip up the contents of the current directory, including the `node_modules` folder.
 
-5. Select Author From Scratch template.
+5. In the Amazon Lambda Console, create a new Function called `EPConversationalLambda`.
 
-6. Choose `Node.js 10.x` as the runtime language.
+6. Select Author From Scratch template.
 
-7. Under the Function Code pane, change Code Entry Type to "Upload a .zip folder".
+7. Choose `Node.js 10.x` as the runtime language.
 
-8. Locate and upload the newly zipped folder.
+8. Under the Function Code pane, change Code Entry Type to "Upload a .zip folder".
 
-9. Under Environment Variables, add and set the following values:
+9. Locate and upload the newly zipped folder.
 
-| Key            | Value                        |
-| -------------- | ---------------------------- |
-| CACHE_TABLE | DynamoCache |
-| GUID | 036e45fe-7003-4b9a-99f3-1c14944bf728 |
-| SCOPE | VESTRI |
-| CORTEX_URL | http://reference.epdemos.com/cortex |
-| ROLE | REGISTERED |
-| GRANT_TYPE | password |
-| USERNAME | jeff.wasty@elasticpath.com |
-| PASSWORD | AlexaTest123 |
+10. Under Environment Variables, add and set the following values:
 
-10. Save the function.
+| Key            | Value                                |
+| -------------- | ------------------------------------ |
+| CACHE_TABLE    | DynamoCache                          |
+| GUID           | 036e45fe-7003-4b9a-99f3-1c14944bf728 |
+| SCOPE          | VESTRI                               |
+| CORTEX_URL     | http://reference.epdemos.com/cortex  |
+| ROLE           | REGISTERED                           |
+| GRANT_TYPE     | password                             |
+| USERNAME       | jeff.wasty@elasticpath.com           |
+| PASSWORD       | AlexaTest123                         |
+
+11. Save the function.
 
 ### Link the Lambda Function to Dynamo DB via IAM roles
 This step of the setup is the most involved, but at it's core it simply allows the lambda function you've created to read & write to the DB table, which preserves the state of the transaction.
@@ -140,7 +142,6 @@ For a complete list of sample phrases, check the [Interaction Model](./models/le
 
 | Action                    | Sample Utterance                          | Intent Name                                           |
 | ------------------------- | ----------------------------------------- | ----------------------------------------------------- |
-| About Store               | "What do you sell?"                       | `DescribeStoreIntent`                                 |
 | Search                    | "Search for {item}"                       | `KeywordSearchIntent`                                 |
 | Next                      | "Next item"                               | `NextItemIntent`                                      |
 | Previous                  | "Previous item"                           | `PreviousItemIntent`                                  |
