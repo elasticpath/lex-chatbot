@@ -6,11 +6,11 @@
   },
   "resource": {
     "name": "EPConversationalInterface",
-    "version": "4",
+    "version": "1",
     "intents": [
       {
         "name": "PrevItemIntent",
-        "version": "6",
+        "version": "2",
         "sampleUtterances": [
           "show me the last item",
           "what was the last item",
@@ -22,7 +22,7 @@
       },
       {
         "name": "RemoveFromCartIntent",
-        "version": "4",
+        "version": "2",
         "sampleUtterances": [
           "remove this item from my cart",
           "remove this from my cart",
@@ -59,7 +59,7 @@
           ]
         },
         "name": "AddToCartIntent",
-        "version": "22",
+        "version": "2",
         "sampleUtterances": [
           "Put it in my cart.",
           "Put {amount} in my cart.",
@@ -111,7 +111,7 @@
       },
       {
         "name": "NextItemIntent",
-        "version": "5",
+        "version": "2",
         "sampleUtterances": [
           "show me something else",
           "what else do you have",
@@ -124,7 +124,7 @@
       },
       {
         "name": "KeywordSearchIntent",
-        "version": "39",
+        "version": "2",
         "sampleUtterances": [
           "search for {searchKeyword}",
           "find {searchKeyword}",
@@ -152,7 +152,7 @@
       },
       {
         "name": "DescribeStoreIntent",
-        "version": "3",
+        "version": "4",
         "sampleUtterances": [
           "what can i purchase in the store",
           "what can i buy in the store",
@@ -163,7 +163,7 @@
       },
       {
         "name": "DescribeProductIntent",
-        "version": "5",
+        "version": "2",
         "sampleUtterances": [
           "give me more info about the product",
           "tell me about them",
@@ -180,7 +180,7 @@
       },
       {
         "name": "GetCartIntent",
-        "version": "8",
+        "version": "2",
         "sampleUtterances": [
           "Go to the cart.",
           "Go to my cart.",
@@ -192,7 +192,7 @@
         "slots": []
       }
     ],
-    "voiceId": "Justin",
+    "voiceId": "Salli",
     "childDirected": false,
     "locale": "en-US",
     "idleSessionTTLInSeconds": 86400,

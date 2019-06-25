@@ -26,7 +26,7 @@ const KeywordSearchHandler = async function (intentRequest, callback) {
         if (reply === "" || reply.statusCode === 404) {
             lexReply = `Invalid search terms. Please try again.`;
         } if (reply === "" || reply.statusCode === 400) {
-            lexReply = `Hm, our database seems to be down.`;
+            lexReply = `I can't seem to reach the database Please try again.`;
         } else {
             try {
                 const count = reply.response.curResponse.length;

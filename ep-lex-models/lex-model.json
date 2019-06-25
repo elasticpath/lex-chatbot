@@ -6,11 +6,11 @@
   },
   "resource": {
     "name": "EPConversationalInterface",
-    "version": "4",
+    "version": "1",
     "intents": [
       {
         "name": "PrevItemIntent",
-        "version": "6",
+        "version": "2",
         "fulfillmentActivity": {
           "codeHook": {
             "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
@@ -29,7 +29,7 @@
       },
       {
         "name": "RemoveFromCartIntent",
-        "version": "4",
+        "version": "2",
         "fulfillmentActivity": {
           "codeHook": {
             "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
@@ -73,7 +73,7 @@
           ]
         },
         "name": "AddToCartIntent",
-        "version": "22",
+        "version": "2",
         "fulfillmentActivity": {
           "codeHook": {
             "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
@@ -139,7 +139,7 @@
       },
       {
         "name": "NextItemIntent",
-        "version": "5",
+        "version": "2",
         "fulfillmentActivity": {
           "codeHook": {
             "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
@@ -159,7 +159,7 @@
       },
       {
         "name": "KeywordSearchIntent",
-        "version": "39",
+        "version": "2",
         "fulfillmentActivity": {
           "codeHook": {
             "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
@@ -194,7 +194,7 @@
       },
       {
         "name": "DescribeStoreIntent",
-        "version": "3",
+        "version": "4",
         "fulfillmentActivity": {
           "codeHook": {
             "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
@@ -208,15 +208,11 @@
           "what do you sell in the store",
           "what do you have in the store"
         ],
-        "slots": [],
-        "dialogCodeHook": {
-          "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
-          "messageVersion": "1.0"
-        }
+        "slots": []
       },
       {
         "name": "DescribeProductIntent",
-        "version": "5",
+        "version": "2",
         "fulfillmentActivity": {
           "codeHook": {
             "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
@@ -240,7 +236,7 @@
       },
       {
         "name": "GetCartIntent",
-        "version": "8",
+        "version": "2",
         "fulfillmentActivity": {
           "codeHook": {
             "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
@@ -259,7 +255,7 @@
         "slots": []
       }
     ],
-    "voiceId": "Justin",
+    "voiceId": "Salli",
     "childDirected": false,
     "locale": "en-US",
     "idleSessionTTLInSeconds": 86400,
