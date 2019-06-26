@@ -17,10 +17,7 @@ Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/).
   - Explain the expected result and the reason.
   - Add screenshots for the results of each step.
 3. Add the following configuration and environment details:
-  - Versions of node and npm that you use. Run the `node --version` and `npm --version` command in the terminal to get the correct version.
   - Name and version of the operating system that you use.
-  - Packages installed on your machine. Review your `package.json` file to get the list. Ensure that new packages are installed successfully during the development.
-  - Properties that you add to the application. The `ep.config.json` file provides the contents of the file, in a [code block](https://help.github.com/articles/markdown-basics/#multiple-lines) or with a link to a [gist](https://gist.github.com/).
   - The keyboard layout. For example, US layout.
 
 ### Suggesting Enhancements
@@ -48,9 +45,9 @@ You can contribute to this project by creating a pull request in the repository.
 1. Fork the repository into your Github account.
 2. Clone the fork locally.
 3. Create a git branch.
-4. Set up the development environment and install the required dependencies. For more information, see [Setting up a Development Environment](README.md#setting-up-a-development-environment).
+4. Set up the development environment and install the required dependencies.
 5. Make the changes and commit the changes to your new branch. Ensure that the code is clear and comprehensible.
-6. Run the local unit tests by following the instruction in the [Running Unit Tests](README.md#running-unit-tests) section. If you add new features or components that require additional unit tests, ensure that the code is tested and verified with appropriate unit tests.
+6. Ensure that the code is tested.
 7. Create a Pull Request (PR).
 8. Incorporate the review comments provided by the repository owner, if any, and get approval.<br/>
 The repository owner merges all approved PRs to the repository.

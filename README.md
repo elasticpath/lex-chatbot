@@ -1,4 +1,4 @@
-# EP Conversational Interface Quickstart Guide
+# Reference EP Conversational Interface Quickstart Guide
 This document exists as a work in progress, and will be continually expanded as more information becomes available.
 
 ## Table Of Contents
@@ -25,7 +25,7 @@ This document provides guidelines to setup and configure the Reference AWS Lex M
 ## Overview
 The EP Conversational Interface is an AWS Lex-based model that allows flexible deployment to a variety of conversational interfaces, including Facebook Messenger and Slack. This model communicates with Elastic Path's RESTful API, Cortex API, to leverage the e-commerce capabilities provided by Elastic Path.
 
--- TBD Model Structure Diagram
+![Architecture Diagram](images/architecture.png)
 
 ## Setting Up the Model
 This section of the guide is sequential in nature. While each step is self-contained, they should be completed in order to avoid unecessary complication.
@@ -156,5 +156,5 @@ For a complete list of sample phrases, check the [Interaction Model](./models/le
 | Checkout                  | "I'd like to check out"                   | `CheckOutIntent`                                      |
 
 ## Terms And Conditions
-- Any changes to this project must be reviewed and approved by the repository owner. For more information about contributing, see the [Contribution Guide](https://github.com/elasticpath/facebook-chat/blob/master/.github/CONTRIBUTING.md).
-- For more information about the license, see [GPLv3 License](https://github.com/elasticpath/facebook-chat/blob/master/LICENSE).
+- Any changes to this project must be reviewed and approved by the repository owner. For more information about contributing, see the [Contribution Guide](https://github.com/elasticpath/lex-chatbot/blob/master/.github/CONTRIBUTING.md).
+- For more information about the license, see [GPLv3 License](https://github.com/elasticpath/lex-chatbot/blob/master/LICENSE).
