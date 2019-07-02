@@ -6,7 +6,7 @@
   },
   "resource": {
     "name": "EPConversationalInterface",
-    "version": "1",
+    "version": "2",
     "intents": [
       {
         "name": "PrevItemIntent",
@@ -180,16 +180,58 @@
       },
       {
         "name": "GetCartIntent",
-        "version": "2",
+        "version": "3",
         "sampleUtterances": [
           "Go to the cart.",
           "Go to my cart.",
           "Go to cart.",
           "Cart",
           "Check cart",
-          "See shopping cart"
+          "See shopping cart",
+          "What's in my cart"
         ],
         "slots": []
+      },
+      {
+        "name": "EPAuthIntent",
+        "version": "12",
+        "sampleUtterances": [
+          "ep-auth {token}",
+          "hello EP",
+          "hello ep"
+        ],
+        "slots": [
+          {
+            "sampleUtterances": [],
+            "slotType": "AuthToken",
+            "slotTypeVersion": "1",
+            "slotConstraint": "Optional",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "e.g. What city?"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 2,
+            "name": "token"
+          }
+        ]
+      }
+    ],
+    "slotTypes": [
+      {
+        "name": "AuthToken",
+        "version": "1",
+        "enumerationValues": [
+          {
+            "value": "9c982b4d-eb86-42ac-90b0-0c437e833aa9",
+            "synonyms": []
+          }
+        ],
+        "valueSelectionStrategy": "ORIGINAL_VALUE"
       }
     ],
     "voiceId": "Salli",

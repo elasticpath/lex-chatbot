@@ -19,6 +19,7 @@
  *
  */
 
+const EPAuthHandler = require('./handlers/epAuth.handler');
 const AddToCartHandler = require('./handlers/addToCart.handler');
 const GetCartHandler = require('./handlers/getCart.handler');
 const RemoveFromCartHandler = require('./handlers/removeFromCart.handler');
@@ -32,17 +33,37 @@ const { ElasticPathIntents } = require('./constants');
 const handler = require("./requestHandler");
 const sessionCart = [];
 
+// Temp cortex stuff for token tracking
+const cortex = require("./cortex");
+const cortexInstance = cortex.getCortexInstance();
+
+// The process that will direct Intent Invocations to their respective handler.
 exports.handler = async (event, context, callback) => {
     try {
+        // 1. Gather information from the current session.
+        let sessionAttributes = event.sessionAttributes || {};
+        
+        // 2. Check if there is a token. If not, run EPAuthHandler.
+        if (!sessionAttributes.token) {
+            await EPAuthHandler(event, (response) => {callback(null, response);});
+        }
+        
+        console.log(`Cortex Instance Token: ${cortexInstance.token}`);
+        console.log(`Session Instance Token: ${sessionAttributes.token}`);
+        
+        // 3. Determine appropriate Intent Invocation.
         switch (event.currentIntent.name) {
+            case ElasticPathIntents.EP_AUTH:
+                await EPAuthHandler(event, (response) => {callback(null, response);});
+                break;
             case ElasticPathIntents.KEYWORD_SEARCH:
                 await KeywordSearchHandler(event, (response) => {callback(null, response);});
                 break;
             case ElasticPathIntents.ADD_TO_CART:
-                await AddToCartHandler(event, (response) => {callback(null, response);}, sessionCart);
+                await AddToCartHandler(event, (response) => {callback(null, response);});
                 break;
             case ElasticPathIntents.GET_CART:
-                await GetCartHandler(event, (response) => {callback(null, response);}, sessionCart);
+                await GetCartHandler(event, (response) => {callback(null, response);});
                 break;
             case ElasticPathIntents.DESCRIBE_PRODUCT:
                 await DescribeProductHandler(event, (response) => {callback(null, response);});

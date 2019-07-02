@@ -17,6 +17,8 @@ async function getCartTotal (intentRequest) {
 const GetCartHandler = async function (intentRequest, callback, sessionCart) {
     const sessionAttributes = intentRequest.sessionAttributes;
 
+    console.log("from getcarthandler: " + JSON.stringify(sessionAttributes));
+    
     callback(lexResponses.close(sessionAttributes, 'Fulfilled',
     {'contentType': 'PlainText', 'content': `${await getCartTotal(intentRequest)}`}));
 };

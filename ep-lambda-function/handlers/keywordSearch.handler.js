@@ -33,7 +33,7 @@ const KeywordSearchHandler = async function (intentRequest, callback) {
                 const first = reply.response.curProduct._definition[0]['display-name'];
 
                 const resultText = count > 1 ? 'results' : 'result';
-                lexReply = `I found ${count} ${resultText} for ${searchKeyword}. The first result is:` + " " + `${JSON.stringify(first)}`;
+                lexReply = `Okay. I found ${count} ${resultText} for ${searchKeyword}. The first result is:` + " " + `${JSON.stringify(first)}`;
                 
             } catch(e) {
                 console.error(e);

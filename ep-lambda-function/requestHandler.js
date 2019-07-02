@@ -2,15 +2,12 @@ const cortex = require("./cortex");
 const cortexInstance = cortex.getCortexInstance();
 const cache = require("./dynamoCache");
 // Determines if items in cache is a cart list or search results list
-let isCart;
 
 async function handleSearchByKeyword(event) {
-    if (!cortexInstance.token) {
-        cortexInstance.token = await cortexInstance.requestToken();
-    }
     try {
+        console.log(`In keywordSearchHandler: ${cortexInstance.token}`);
         let result = await cortexInstance.getItemsByKeyword(event.currentIntent.slots.searchKeyword);
-        console.log("In request hander.js");
+        // console.log("In request hander.js");
         console.log(JSON.stringify(result));
         const cacheEntry = {
             curResponse: JSON.stringify(result),
@@ -34,9 +31,9 @@ async function handleSearchByKeyword(event) {
 }
 
 async function handleNextItem(event, curResponse, newProduct, newIndex, curCart) {
-    if (!cortexInstance.token) {
-        cortexInstance.token = await cortexInstance.requestToken();
-    }
+    // if (!cortexInstance.token) {
+    //     cortexInstance.token = await cortexInstance.requestToken();
+    // }
     try {
         const cacheEntry = {
             curResponse: JSON.stringify(curResponse),
@@ -61,9 +58,9 @@ async function handleNextItem(event, curResponse, newProduct, newIndex, curCart)
 }
 
 async function handlePrevItem(event, curResponse, newProduct, newIndex, curCart) {
-    if (!cortexInstance.token) {
-        cortexInstance.token = await cortexInstance.requestToken();
-    }
+    // if (!cortexInstance.token) {
+    //     cortexInstance.token = await cortexInstance.requestToken();
+    // }
     try {
         const cacheEntry = {
             curResponse: JSON.stringify(curResponse),
@@ -88,9 +85,9 @@ async function handlePrevItem(event, curResponse, newProduct, newIndex, curCart)
 }
 
 async function handleDescribeProduct(sku) {
-    if (!cortexInstance.token) {
-        cortexInstance.token = await cortexInstance.requestToken();
-    }
+    // if (!cortexInstance.token) {
+    //     cortexInstance.token = await cortexInstance.requestToken();
+    // }
     
     try {
         let result = await cortexInstance.cortexGetItemBySku(sku);
@@ -109,9 +106,9 @@ async function handleDescribeProduct(sku) {
 }
 
 async function handleAddtoCart(currentCode, amount) {
-    if (!cortexInstance.token) {
-        cortexInstance.token = await cortexInstance.requestToken();
-    }
+    // if (!cortexInstance.token) {
+    //     cortexInstance.token = await cortexInstance.requestToken();
+    // }
     try {
         let result = await cortexInstance.cortexAddToCart(currentCode, amount);
         const response = {
@@ -129,9 +126,9 @@ async function handleAddtoCart(currentCode, amount) {
     
 }
 async function handleGetCart(event) {
-    if (!cortexInstance.token) {
-        cortexInstance.token = await cortexInstance.requestToken();
-    }
+    // if (!cortexInstance.token) {
+    //     cortexInstance.token = await cortexInstance.requestToken();
+    // }
     try {
         let result = await cortexInstance.getCartItems();
         const defaultCart = result['_defaultcart'][0];
@@ -167,9 +164,9 @@ async function handleGetCart(event) {
 }
 
 async function handleRemoveFromCart(sku) {
-    if (!cortexInstance.token) {
-        cortexInstance.token = await cortexInstance.requestToken();
-    }
+    // if (!cortexInstance.token) {
+    //     cortexInstance.token = await cortexInstance.requestToken();
+    // }
     try {
         let result = await cortexInstance.cortexDeleteFromCart(sku);
         const response = {
@@ -188,9 +185,9 @@ async function handleRemoveFromCart(sku) {
 }
 
 async function handleCheckoutCart(event) {
-    if (!cortexInstance.token) {
-        cortexInstance.token = await cortexInstance.requestToken();
-    }
+    // if (!cortexInstance.token) {
+    //     cortexInstance.token = await cortexInstance.requestToken();
+    // }
     try {
         let result = await cortexInstance.cortexCheckout();
         const response = {

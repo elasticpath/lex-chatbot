@@ -18,7 +18,7 @@ const DescribeProductHandler = async function (intentRequest, callback) {
     // 0. Check if there is a currentResult
     const product = reply.response.curProduct;
     if (!product) {
-        return ".. Oh! The product list is empty. Try searching for something first.";
+        return ".. Oh! Well, the product list is empty at the moment. Try searching for something first.";
     } 
     
     // 2. Error handling for response codes.
@@ -44,7 +44,7 @@ const DescribeProductHandler = async function (intentRequest, callback) {
     // responseString += currentUri;
         
     callback(lexResponses.close(sessionAttributes, 'Fulfilled',
-    {'contentType': 'PlainText', 'content': `Okay.${responseString}`}));
+    {'contentType': 'PlainText', 'content': `${responseString}`}));
 };
 
 module.exports = DescribeProductHandler;

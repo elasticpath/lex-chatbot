@@ -30,6 +30,7 @@ module.exports.AmazonIntent = {
 };
 
 module.exports.ElasticPathIntents = {
+    EP_AUTH: 'EPAuthIntent',
     ADD_TO_CART: 'AddToCartIntent',
     ADD_TO_WISHLIST: 'AddToWishlistIntent',
     CHECKOUT: "CheckoutCartIntent",

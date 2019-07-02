@@ -36,7 +36,7 @@ async function fetch() {
     };
     try {
         let data = await dynamoDB.get(params).promise();
-        console.log("In dynamoCache.js, fetching from Dynamo.");
+        // console.log("In dynamoCache.js, fetching from Dynamo.");
         const response = {
             isCart: data.Item.isCart,
             curProduct: JSON.parse(data.Item.curProduct),
