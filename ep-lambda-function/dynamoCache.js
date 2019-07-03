@@ -3,13 +3,15 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient({ region: 'us-west-2' });
 const TABLE_NAME = process.env.CACHE_TABLE || 'lex-cache';
 const id = process.env.GUID;
 
-
-
-async function put(payload) {
+async function put(payload, sessionId) {
+    // Time to live set to 1 minute after latest put request.
+    let time = Math.floor(Date.now() / 1000) + 60;
+    // console.log(`In DynamoPut: TTL ${time}`);
     let params = {
         TableName : TABLE_NAME,
         Item: {
-            responseId: id,
+            responseId: sessionId,
+            ttl : time,
             curResponse: payload.curResponse,
             curProduct: payload.curProduct,
             curProductIndex: payload.curProductIndex,
@@ -27,11 +29,11 @@ async function put(payload) {
     }
 }
 
-async function fetch() {
+async function fetch(sessionId) {
     let params = {
         TableName: TABLE_NAME,
         Key: {
-            responseId: id
+            responseId: sessionId
         }
     };
     try {

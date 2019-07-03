@@ -5,17 +5,16 @@ const cache = require("./dynamoCache");
 
 async function handleSearchByKeyword(event) {
     try {
-        console.log(`In keywordSearchHandler: ${cortexInstance.token}`);
+        // console.log(`In keywordSearchHandler: ${cortexInstance.token}`);
         let result = await cortexInstance.getItemsByKeyword(event.currentIntent.slots.searchKeyword);
-        // console.log("In request hander.js");
-        console.log(JSON.stringify(result));
+        
         const cacheEntry = {
             curResponse: JSON.stringify(result),
             curProduct: JSON.stringify(result[0]),
             curProductIndex: 0,
             isCart: false
         }
-        await cache.put(cacheEntry);
+        await cache.put(cacheEntry, event.sessionAttributes.token);
         const response = {
             statusCode: 200,
             body: result
@@ -31,9 +30,6 @@ async function handleSearchByKeyword(event) {
 }
 
 async function handleNextItem(event, curResponse, newProduct, newIndex, curCart) {
-    // if (!cortexInstance.token) {
-    //     cortexInstance.token = await cortexInstance.requestToken();
-    // }
     try {
         const cacheEntry = {
             curResponse: JSON.stringify(curResponse),
@@ -42,7 +38,7 @@ async function handleNextItem(event, curResponse, newProduct, newIndex, curCart)
             isCart: curCart
         };
 
-        await cache.put(cacheEntry);
+        await cache.put(cacheEntry, event.sessionAttributes.token);
         const response = {
             statusCode: 200,
             body: "Successfully incremented to next index."
@@ -58,9 +54,6 @@ async function handleNextItem(event, curResponse, newProduct, newIndex, curCart)
 }
 
 async function handlePrevItem(event, curResponse, newProduct, newIndex, curCart) {
-    // if (!cortexInstance.token) {
-    //     cortexInstance.token = await cortexInstance.requestToken();
-    // }
     try {
         const cacheEntry = {
             curResponse: JSON.stringify(curResponse),
@@ -68,7 +61,7 @@ async function handlePrevItem(event, curResponse, newProduct, newIndex, curCart)
             curProductIndex: newIndex,
             isCart: curCart
         };
-        await cache.put(cacheEntry);
+        await cache.put(cacheEntry, event.sessionAttributes.token);
         const response = {
             statusCode: 200,
             body: "Successfully decremented to previous index."
@@ -85,10 +78,6 @@ async function handlePrevItem(event, curResponse, newProduct, newIndex, curCart)
 }
 
 async function handleDescribeProduct(sku) {
-    // if (!cortexInstance.token) {
-    //     cortexInstance.token = await cortexInstance.requestToken();
-    // }
-    
     try {
         let result = await cortexInstance.cortexGetItemBySku(sku);
         const response = {
@@ -106,9 +95,6 @@ async function handleDescribeProduct(sku) {
 }
 
 async function handleAddtoCart(currentCode, amount) {
-    // if (!cortexInstance.token) {
-    //     cortexInstance.token = await cortexInstance.requestToken();
-    // }
     try {
         let result = await cortexInstance.cortexAddToCart(currentCode, amount);
         const response = {
@@ -126,14 +112,11 @@ async function handleAddtoCart(currentCode, amount) {
     
 }
 async function handleGetCart(event) {
-    // if (!cortexInstance.token) {
-    //     cortexInstance.token = await cortexInstance.requestToken();
-    // }
     try {
         let result = await cortexInstance.getCartItems();
         const defaultCart = result['_defaultcart'][0];
 
-        //only add cart items to cache if cart is not empty
+        // only add cart items to cache if cart is not empty
         if (defaultCart['_lineitems']) {
             const arrCartItems = defaultCart['_lineitems'][0]['_element'].map((ele) => {
                 return ele['_item'][0];
@@ -145,7 +128,7 @@ async function handleGetCart(event) {
                 curProductIndex: 0,
                 isCart: true
             }
-            await cache.put(cacheEntry);
+            await cache.put(cacheEntry, event.sessionAttributes.token);
         }
         
         const response = {
@@ -164,9 +147,6 @@ async function handleGetCart(event) {
 }
 
 async function handleRemoveFromCart(sku) {
-    // if (!cortexInstance.token) {
-    //     cortexInstance.token = await cortexInstance.requestToken();
-    // }
     try {
         let result = await cortexInstance.cortexDeleteFromCart(sku);
         const response = {
@@ -185,9 +165,6 @@ async function handleRemoveFromCart(sku) {
 }
 
 async function handleCheckoutCart(event) {
-    // if (!cortexInstance.token) {
-    //     cortexInstance.token = await cortexInstance.requestToken();
-    // }
     try {
         let result = await cortexInstance.cortexCheckout();
         const response = {

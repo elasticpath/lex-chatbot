@@ -48,10 +48,10 @@ exports.handler = async (event, context, callback) => {
             await EPAuthHandler(event, (response) => {callback(null, response);});
         }
         
-        console.log(`Cortex Instance Token: ${cortexInstance.token}`);
-        console.log(`Session Instance Token: ${sessionAttributes.token}`);
+        // 3. Ensure the correct token is being used by the following intent.
+        cortexInstance.verifyToken(sessionAttributes.token);
         
-        // 3. Determine appropriate Intent Invocation.
+        // 4. Determine appropriate Intent Invocation.
         switch (event.currentIntent.name) {
             case ElasticPathIntents.EP_AUTH:
                 await EPAuthHandler(event, (response) => {callback(null, response);});

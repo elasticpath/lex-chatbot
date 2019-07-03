@@ -19,7 +19,6 @@
  *
  */
 
-
 const request = require("request-promise-native");
 
 const CORTEX_URL = process.env.CORTEX_URL; // || "http://reference.epdemos.com/cortex";
@@ -57,7 +56,7 @@ Cortex.prototype.cortexLogin = function () {
 };
 
 Cortex.prototype.cortexGet = function (url) {
-    console.log(`From cortexGet: ${this.token}`);
+    // console.log(`From cortexGet: ${this.token}`);
     return request({
         uri: url,
         method: 'GET',
@@ -117,6 +116,17 @@ Cortex.getCortexInstance = function() {
 }
 
 /**
+* Function to be called by Lex Session, to ensure relevant token is used.
+* @param {String} sessionToken - the relevant token supplied by Lex sessionAttributes
+*/
+Cortex.prototype.verifyToken = function (sessionToken) {
+    // 1. Check if the current instance token is relevant
+    if (this.token !== sessionToken) {
+        this.token = sessionToken;
+    }
+}
+
+/**
  * function gets item information
  * @param  {String} sku - the sku code of the item you would like to search
  * @param  {String} zoom - The attribute of the item you would like to zoom to.  EX.  can be 'price' or 'definition' or even 'recommendations:crosssell'
@@ -148,7 +158,7 @@ Cortex.prototype.cortexAddToCart = function (sku, itemQuantity) {
                 .then(data => resolve(data))
                 .catch(error => reject(error));
             } else {
-                console.log(data_addtocartform[0]);
+                console.log(data._addtocartform[0]);
                 resolve(data);
             }
         })

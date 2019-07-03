@@ -4,9 +4,10 @@ const cache = require('../dynamoCache');
 
 const NextItemHandler = async function (intentRequest, callback) {
         let sessionAttributes = intentRequest.sessionAttributes;
+        
         let lexReply = "";
 
-        const reply = await cache.fetch();
+        const reply = await cache.fetch(intentRequest.sessionAttributes.token);
         
         if (reply === "" || reply.statusCode === 404) {
             lexReply = `Something went wrong. Couldn't find next item.`;
@@ -21,7 +22,7 @@ const NextItemHandler = async function (intentRequest, callback) {
                         const newItem = reply.response.curResponse[newIndex];
                         const currentName = newItem._definition[0]['display-name'];
 
-                        const first = newItem._definition[0]['display-name'];
+                        // const first = newItem._definition[0]['display-name'];
 
                         const curResponse = reply.response.curResponse;
                         const curCart = reply.response.isCart;
@@ -29,7 +30,6 @@ const NextItemHandler = async function (intentRequest, callback) {
                         await handler.handleNextItem(intentRequest, curResponse, newItem, newIndex, curCart);
 
                         lexReply = `Okay! Item number ${newIndex + 1} is:` + " " + `${JSON.stringify(currentName)}`;
-                        
                     } else {
                         lexReply = 'Cannot go next anymore.';
                     }
@@ -38,7 +38,7 @@ const NextItemHandler = async function (intentRequest, callback) {
                 }
             } catch(e) {
                 console.error(e);
-                lexReply = `Something went wrong. Couldn't find next item.`;
+                lexReply = `Couldn't find the next item. Your session may have expired.`;
             }
         }
 

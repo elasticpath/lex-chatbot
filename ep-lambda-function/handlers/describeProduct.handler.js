@@ -13,38 +13,42 @@ async function getReply(currentCode) {
 
 const DescribeProductHandler = async function (intentRequest, callback) {
     const sessionAttributes = intentRequest.sessionAttributes;
-    const reply = await cache.fetch();
+    const reply = await cache.fetch(intentRequest.sessionAttributes.token);
+    let lexResponse = "";
     
-    // 0. Check if there is a currentResult
-    const product = reply.response.curProduct;
-    if (!product) {
-        return ".. Oh! Well, the product list is empty at the moment. Try searching for something first.";
-    } 
+    // 1. Check to see if there is a response from the cache
+    if (reply.response) {
+        // 2. Check if there is a currentResult
+        const product = reply.response.curProduct;
+        if (!product) {
+            return ".. Oh! Well, the product list is empty at the moment. Try searching for something first.";
+        } 
+        
+        // 3. Error handling for response codes.
+        if (reply === "" || reply.statusCode === 404) {
+             return `Invalid search terms. Please try again.`;
+        }
+        
+        // 4. Assign it's name, description, and price from response
+        let productName = product._definition[0]['display-name'];
     
-    // 2. Error handling for response codes.
-    if (reply === "" || reply.statusCode === 404) {
-         return `Invalid search terms. Please try again.`;
-    }
+        let productDesc = product._definition[0].details[0]['display-value'];
+        let productPrice;
+        if (reply.response.isCart) {
+            productPrice = product._price[0]['list-price'][0].display;
+        } else {
+            productPrice = product._items[0]._element[0]._price[0]['list-price'][0].display;
+        }
     
-    // 2. Assign it's name, description, and price from response
-    let productName = product._definition[0]['display-name'];
-
-    let productDesc = product._definition[0].details[0]['display-value'];
-    let productPrice;
-    if (reply.response.isCart) {
-        productPrice = product._price[0]['list-price'][0].display;
+        lexResponse = `${productName} costs ${productPrice}. \n${productDesc}`;
     } else {
-        productPrice = product._items[0]._element[0]._price[0]['list-price'][0].display;
+        lexResponse = "No item is currently selected. Your session may have expired.";
     }
-    // let productPrice = '$12.99'
-
-    let responseString = " ";
-
-    responseString += `${productName} costs ${productPrice}. \n${productDesc}`;
-    // responseString += currentUri;
+    
+    
         
     callback(lexResponses.close(sessionAttributes, 'Fulfilled',
-    {'contentType': 'PlainText', 'content': `${responseString}`}));
+    {'contentType': 'PlainText', 'content': `${lexResponse}`}));
 };
 
 module.exports = DescribeProductHandler;

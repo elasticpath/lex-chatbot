@@ -15,7 +15,7 @@ async function getReply(intentRequest) {
 const PrevItemHandler = async function (intentRequest, callback) {
         let sessionAttributes = intentRequest.sessionAttributes;
         let lexReply = "";
-        const reply = await cache.fetch();
+        const reply = await cache.fetch(intentRequest.sessionAttributes.token);
         
         if (reply === "" || reply.statusCode === 404) {
             lexReply = `Something went wrong. Couldn't find previous item.`;
@@ -43,7 +43,7 @@ const PrevItemHandler = async function (intentRequest, callback) {
                 }
             } catch(e) {
                 console.log(e);
-                lexReply = `Something went wrong. Couldn't find previous item.`;
+                lexReply = `Couldn't find the previous item. Your session may have expired.`;
             }
         }
 

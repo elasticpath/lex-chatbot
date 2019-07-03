@@ -6,7 +6,7 @@
   },
   "resource": {
     "name": "EPConversationalInterface",
-    "version": "2",
+    "version": "3",
     "intents": [
       {
         "name": "PrevItemIntent",
@@ -73,7 +73,7 @@
           ]
         },
         "name": "AddToCartIntent",
-        "version": "2",
+        "version": "3",
         "fulfillmentActivity": {
           "codeHook": {
             "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
@@ -90,7 +90,8 @@
           "Add that to my cart.",
           "Add that item to my cart.",
           "add {amount} of those to my cart",
-          "i'd like {amount} of those"
+          "i'd like {amount} of those",
+          "add {amount} to cart"
         ],
         "slots": [
           {
@@ -257,7 +258,7 @@
       },
       {
         "name": "EPAuthIntent",
-        "version": "12",
+        "version": "19",
         "fulfillmentActivity": {
           "codeHook": {
             "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
@@ -267,20 +268,19 @@
         },
         "sampleUtterances": [
           "ep-auth {token}",
-          "hello EP",
           "hello ep"
         ],
         "slots": [
           {
             "sampleUtterances": [],
             "slotType": "AuthToken",
-            "slotTypeVersion": "1",
+            "slotTypeVersion": "2",
             "slotConstraint": "Optional",
             "valueElicitationPrompt": {
               "messages": [
                 {
                   "contentType": "PlainText",
-                  "content": "e.g. What city?"
+                  "content": "enter token:"
                 }
               ],
               "maxAttempts": 2
@@ -294,11 +294,13 @@
     "slotTypes": [
       {
         "name": "AuthToken",
-        "version": "1",
+        "version": "2",
         "enumerationValues": [
           {
-            "value": "9c982b4d-eb86-42ac-90b0-0c437e833aa9",
-            "synonyms": []
+            "value": "9c982b4d-eb86-42ac-90b0-0c437e833aa9"
+          },
+          {
+            "value": "e96b9ab6-c834-48f3-a40a-1574a5175f38"
           }
         ],
         "valueSelectionStrategy": "ORIGINAL_VALUE"

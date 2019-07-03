@@ -16,17 +16,18 @@ async function getReply(intentRequest) {
 const KeywordSearchHandler = async function (intentRequest, callback) {
         const slots = intentRequest.currentIntent.slots;
         const searchKeyword = slots.searchKeyword;
+        
         let sessionAttributes = intentRequest.sessionAttributes;
         
         await getReply(intentRequest);
         let lexReply;
         
-        const reply = await cache.fetch();
+        const reply = await cache.fetch(intentRequest.sessionAttributes.token);
         
         if (reply === "" || reply.statusCode === 404) {
             lexReply = `Invalid search terms. Please try again.`;
-        } if (reply === "" || reply.statusCode === 400) {
-            lexReply = `I can't seem to reach the database Please try again.`;
+        } else if (reply === "" || reply.statusCode === 400) {
+            lexReply = `No results found using those search terms.`;
         } else {
             try {
                 const count = reply.response.curResponse.length;

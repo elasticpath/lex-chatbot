@@ -34,7 +34,7 @@ const EPAuthHandler = async function (intentRequest, callback) {
         lexReply = `Welcome to EP! How may I assist?`;
     }
     
-    // 3. Send confirmation with relevant case message.
+    // 4. Send confirmation with relevant case message.
     callback(lexResponses.close(sessionAttributes, 'Fulfilled',
     {'contentType': 'PlainText', 'content': lexReply}));
 };

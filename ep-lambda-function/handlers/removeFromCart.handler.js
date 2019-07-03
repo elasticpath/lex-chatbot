@@ -2,18 +2,11 @@ const lexResponses = require('../lexResponses');
 const handler = require('../requestHandler');
 const cache = require('../dynamoCache');
 
-// async function removeFromCart (intentRequest) {
-//     console.log("FROM REMOVE CART");
-//     const response = await handler.handleRemoveFromCart(intentRequest.currentIntent.slots.code);
-
-//     return JSON.stringify(response);
-// }
-
 const RemoveFromCartHandler = async function (intentRequest, callback) {
     let sessionAttributes = intentRequest.sessionAttributes;
     let lexReply = "";
 
-    const reply = await cache.fetch();
+    const reply = await cache.fetch(intentRequest.sessionAttributes.token);
 
     if (!reply || reply.statusCode === 404) {
         lexReply = `Item couldn't be removed from cart. Please try again`;
@@ -25,7 +18,7 @@ const RemoveFromCartHandler = async function (intentRequest, callback) {
             lexReply = `${productName} has been removed from your cart`;
             await handler.handleGetCart(intentRequest);
         } catch(e) {
-            lexReply = "Something went wrong. Please try again";
+            lexReply = "Cannot remove from cart. Your session may have expired.";
         }
     }
 
