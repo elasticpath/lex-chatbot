@@ -26,7 +26,6 @@ const cache = require("./dynamoCache");
 
 async function handleSearchByKeyword(event) {
     try {
-        // console.log(`In keywordSearchHandler: ${cortexInstance.token}`);
         let result = await cortexInstance.getItemsByKeyword(event.currentIntent.slots.searchKeyword);
         
         const cacheEntry = {

@@ -66,8 +66,6 @@ const DescribeProductHandler = async function (intentRequest, callback) {
         lexResponse = "No item is currently selected. Your session may have expired.";
     }
     
-    
-        
     callback(lexResponses.close(sessionAttributes, 'Fulfilled',
     {'contentType': 'PlainText', 'content': `${lexResponse}`}));
 };

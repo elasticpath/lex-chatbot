@@ -63,7 +63,7 @@ const PrevItemHandler = async function (intentRequest, callback) {
                     lexReply = `Something went wrong. Try searching for product again.`;
                 }
             } catch(e) {
-                console.log(e);
+                console.error(e);
                 lexReply = `Couldn't find the previous item. Your session may have expired.`;
             }
         }
