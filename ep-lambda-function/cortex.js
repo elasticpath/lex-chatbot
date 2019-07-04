@@ -21,12 +21,12 @@
 
 const request = require("request-promise-native");
 
-const CORTEX_URL = process.env.CORTEX_URL; // || "http://reference.epdemos.com/cortex";
-const GRANT_TYPE = process.env.GRANT_TYPE; // || "password";
-const ROLE = process.env.ROLE; // || "PUBLIC";
-const SCOPE = process.env.SCOPE; // || "VESTRI";
-const USERNAME = process.env.USERNAME; // || "jeff.wasty@elasticpath.com";
-const PASSWORD = process.env.PASSWORD; // || "AlexaTest123";
+const CORTEX_URL = process.env.CORTEX_URL;
+const GRANT_TYPE = process.env.GRANT_TYPE;
+const ROLE = process.env.ROLE;
+const SCOPE = process.env.SCOPE;
+const USERNAME = process.env.USERNAME;
+const PASSWORD = process.env.PASSWORD;
 
 function Cortex(baseUrl, token) {
     this.cortexBaseUrl = baseUrl;
@@ -56,7 +56,6 @@ Cortex.prototype.cortexLogin = function () {
 };
 
 Cortex.prototype.cortexGet = function (url) {
-    // console.log(`From cortexGet: ${this.token}`);
     return request({
         uri: url,
         method: 'GET',
@@ -158,7 +157,6 @@ Cortex.prototype.cortexAddToCart = function (sku, itemQuantity) {
                 .then(data => resolve(data))
                 .catch(error => reject(error));
             } else {
-                console.log(data._addtocartform[0]);
                 resolve(data);
             }
         })
