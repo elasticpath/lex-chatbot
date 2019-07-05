@@ -50,18 +50,25 @@ const DescribeProductHandler = async function (intentRequest, callback) {
              return lexResponses.generalResponse.INVALID_SEARCH;
         }
         
-        // 4. Assign it's name, description, and price from response
+        // 5. Assign it's name, description, and price from response
         let productName = product._definition[0]['display-name'];
     
         let productDesc = product._definition[0].details[0]['display-value'];
         let productPrice;
+
+        // 6. Check if we are describing in cart, or in product list.
         if (reply.response.isCart) {
             productPrice = product._price[0]['list-price'][0].display;
+            lexResponse = `${productName} costs ${productPrice}. \n${productDesc}`;
         } else {
-            productPrice = product._items[0]._element[0]._price[0]['list-price'][0].display;
+            // Check if pricing is available.
+            if (product._items[0]._element[0]._price) {
+                productPrice = product._items[0]._element[0]._price[0]['list-price'][0].display;
+                lexResponse = `${productName} costs ${productPrice}. \n${productDesc}`;
+            } else {
+                lexResponse = `${productName}'s price is currently unavailable. \n${productDesc}`;
+            }
         }
-    
-        lexResponse = `${productName} costs ${productPrice}. \n${productDesc}`;
     } else {
         lexResponse = lexResponses.generalResponse.EMPTY_LIST;
     }

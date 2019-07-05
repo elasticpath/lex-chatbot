@@ -31,6 +31,7 @@ module.exports.generalResponse = {
     NO_RESULTS: `No results found using those search terms.`,
     EMPTY_CART: `Your cart is currently empty.`,
     EMPTY_LIST: `The product list is empty at the moment. Try searching for something first.`,
+    ITEM_UNAVAILABLE: `This product is currently unavailable.`,
     PUBLIC_SERVICE: `This service is unavailable to public users. Please register an account at vestri.com`
 };
 
