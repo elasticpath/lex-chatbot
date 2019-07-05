@@ -45,10 +45,13 @@ const KeywordSearchHandler = async function (intentRequest, callback) {
         
         const reply = await cache.fetch(intentRequest.sessionAttributes.token);
         
-        if (reply === "" || reply.statusCode === 404) {
-            lexReply = `Invalid search terms. Please try again.`;
+        // Check standard error codes
+        if (reply === "" || reply.statusCode === 401) {
+            lexReply = lexResponses.errorCodes.ERROR_401;
+        } else if (reply === "" || reply.statusCode === 404) {
+            lexReply = lexResponses.generalResponse.INVALID_SEARCH;
         } else if (reply === "" || reply.statusCode === 400) {
-            lexReply = `No results found using those search terms.`;
+            lexReply = lexResponses.generalResponse.NO_RESULTS;
         } else {
             try {
                 const count = reply.response.curResponse.length;
@@ -59,7 +62,7 @@ const KeywordSearchHandler = async function (intentRequest, callback) {
                 
             } catch(e) {
                 console.error(e);
-                lexReply = `No results found. Please try searching for a different item.`;
+                lexReply = lexResponses.generalResponse.NO_RESULTS;
             }
         }
         

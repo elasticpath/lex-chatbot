@@ -23,7 +23,6 @@ const lexResponses = require('../lexResponses');
 const handler = require('../requestHandler');
 const cache = require('../dynamoCache');
 
-
 async function getReply(currentCode) {
     if (currentCode !== null && currentCode !== "") {
         const product = await handler.handleDescribeProduct(currentCode);
@@ -36,18 +35,19 @@ const DescribeProductHandler = async function (intentRequest, callback) {
     const sessionAttributes = intentRequest.sessionAttributes;
     const reply = await cache.fetch(intentRequest.sessionAttributes.token);
     let lexResponse = "";
+    let product;
     
     // 1. Check to see if there is a response from the cache
     if (reply.response) {
         // 2. Check if there is a currentResult
-        const product = reply.response.curProduct;
+        product = reply.response.curProduct;
         if (!product) {
-            return ".. Oh! Well, the product list is empty at the moment. Try searching for something first.";
+            return lexResponses.generalResponse.EMPTY_LIST;
         } 
         
         // 3. Error handling for response codes.
         if (reply === "" || reply.statusCode === 404) {
-             return `Invalid search terms. Please try again.`;
+             return lexResponses.generalResponse.INVALID_SEARCH;
         }
         
         // 4. Assign it's name, description, and price from response
@@ -63,11 +63,16 @@ const DescribeProductHandler = async function (intentRequest, callback) {
     
         lexResponse = `${productName} costs ${productPrice}. \n${productDesc}`;
     } else {
-        lexResponse = "No item is currently selected. Your session may have expired.";
+        lexResponse = lexResponses.generalResponse.EMPTY_LIST;
     }
     
-    callback(lexResponses.close(sessionAttributes, 'Fulfilled',
-    {'contentType': 'PlainText', 'content': `${lexResponse}`}));
+    callback(lexResponses.close(sessionAttributes,
+        'Fulfilled',
+        {
+            'contentType': 'PlainText',
+            'content': `${lexResponse}`
+            
+        }));
 };
 
 module.exports = DescribeProductHandler;

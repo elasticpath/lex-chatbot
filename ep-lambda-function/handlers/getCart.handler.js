@@ -24,10 +24,16 @@ const handler = require('../requestHandler');
 
 async function getCartTotal (intentRequest) {
     const response = await handler.handleGetCart(intentRequest);
+    
+    // Error handling for 401 - missing roles
+    if (response[`body`][`statusCode`] === 401) {
+        return lexResponses.errorCodes.ERROR_401;
+    }
+    
     const totalQuant = response['body']['_defaultcart'][0]['total-quantity'];
     
     if (totalQuant === 0) {
-        return 'Cart is empty';
+        return lexResponses.generalResponse.EMPTY_CART;
     }
     const totalPrice = response['body']['_defaultcart'][0]['_total'][0]['cost'][0]['display'];
     const firstItem = response['body']['_defaultcart'][0]['_lineitems'][0]['_element'][0]['_item'][0]['_definition'][0]['display-name'];

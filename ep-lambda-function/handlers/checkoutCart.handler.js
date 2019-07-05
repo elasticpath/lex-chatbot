@@ -35,7 +35,7 @@ const CheckoutCartHandler = async function (intentRequest, callback) {
     } else if (checkoutResult.body.type === 'needinfo'){
     	checkoutDesc = checkoutResult['body']['debug-message'];
     } else {
-        checkoutDesc = `Nothing to checkout. Cart is empty.`
+        checkoutDesc = lexResponses.generalResponse.EMPTY_CART;
     }
 
     callback(lexResponses.close(sessionAttributes, 'Fulfilled',

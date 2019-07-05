@@ -1,24 +1,4 @@
-/**
- * Copyright © 2018 Elastic Path Software Inc. All rights reserved.
- *
- * This is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this license. If not, see
- *
- *     https://www.gnu.org/licenses/
- *
- *
- */
-
+// Lex fulfillment functions
 module.exports.close = function (sessionAttributes, fulfillmentState, message) {
     return {
         sessionAttributes,
@@ -29,3 +9,30 @@ module.exports.close = function (sessionAttributes, fulfillmentState, message) {
         },
     };
 }
+// Auth and Invocation messages
+module.exports.epAuth = {
+    WELCOME: `Welcome to EP! How may I assist?`,
+    GREETINGS: `Hello again!`,
+    REQUIRE_TOKEN: `Please initialize the chatbot with command "hello ep"`
+};
+
+// List transition messages
+module.exports.list = {
+    END_OF_LIST: `We're at the end of the list.`,
+    START_OF_LIST: `We're at the start of the list.`
+};
+
+// General Response Messages
+module.exports.generalResponse = {
+    EXPIRED_SESSION: `Unable to perform task. Your session may have expired.`,
+    INVALID_SEARCH: `Invalid search terms. Please try again.`,
+    NO_RESULTS: `No results found using those search terms.`,
+    EMPTY_CART: `Your cart is currently empty.`,
+    EMPTY_LIST: `The product list is empty at the moment. Try searching for something first.`
+};
+
+// Error code messages
+module.exports.errorCodes = {
+    ERROR_404: `This service is currently unavailable.`,
+    ERROR_401: `The bearer token was rejected: Missing Roles.`
+};

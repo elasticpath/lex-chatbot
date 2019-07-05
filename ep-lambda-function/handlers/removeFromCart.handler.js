@@ -30,7 +30,7 @@ const RemoveFromCartHandler = async function (intentRequest, callback) {
     const reply = await cache.fetch(intentRequest.sessionAttributes.token);
 
     if (!reply || reply.statusCode === 404) {
-        lexReply = `Item couldn't be removed from cart. Please try again`;
+        lexReply = lexResponses.errorCodes.ERROR_404;
     } else {
         try {
             let sku = reply.response.curProduct['_code'][0]['code'];
@@ -39,7 +39,7 @@ const RemoveFromCartHandler = async function (intentRequest, callback) {
             lexReply = `${productName} has been removed from your cart`;
             await handler.handleGetCart(intentRequest);
         } catch(e) {
-            lexReply = "Cannot remove from cart. Your session may have expired.";
+            lexReply = lexResponses.generalResponse.EXPIRED_SESSION;
         }
     }
 

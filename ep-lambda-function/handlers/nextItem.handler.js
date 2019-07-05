@@ -31,7 +31,7 @@ const NextItemHandler = async function (intentRequest, callback) {
         const reply = await cache.fetch(intentRequest.sessionAttributes.token);
         
         if (reply === "" || reply.statusCode === 404) {
-            lexReply = `Something went wrong. Couldn't find next item.`;
+            lexReply = lexResponses.errorCodes.ERROR_404;
         } else {
             try {
                 const currentIndex = reply.response.curProductIndex;
@@ -52,14 +52,14 @@ const NextItemHandler = async function (intentRequest, callback) {
 
                         lexReply = `Okay! Item number ${newIndex + 1} is:` + " " + `${JSON.stringify(currentName)}`;
                     } else {
-                        lexReply = 'Cannot go next anymore.';
+                        lexReply = lexResponses.list.END_OF_LIST;
                     }
                 } else {
-                    lexReply = `Something went wrong. Try searching for product again.`;
+                    lexReply = lexResponses.generalResponse.EMPTY_LIST;
                 }
             } catch(e) {
                 console.error(e);
-                lexReply = `Couldn't find the next item. Your session may have expired.`;
+                lexReply = lexResponses.generalResponse.EXPIRED_SESSION;
             }
         }
 

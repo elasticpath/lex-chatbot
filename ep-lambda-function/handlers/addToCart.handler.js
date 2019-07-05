@@ -37,10 +37,10 @@ const AddToCartHandler = async function (intentRequest, callback) {
             const amount = intentRequest.currentIntent.slots.amount;
             await handler.handleAddtoCart(currentCode, amount);
             
-            lexResponse = `I\'ve added ${amount} of \"${displayName}\" to your cart.`;
+            lexResponse = `I've added ${amount} of "${displayName}" to your cart.`;
         } else {
             // Inform that the session data may have expired
-            lexResponse = `Unable to add to cart. Your session may have expired.`
+            lexResponse = lexResponses.generalResponse.EXPIRED_SESSION;
         }
     
         callback(

@@ -6,8 +6,6 @@
     "start": "./node_modules/.bin/lex-model-local"
   },
   "dependencies": {
-    "ask-sdk-core": "^2.3.0",
-    "ask-sdk-model": "^1.11.0",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.5"
   },

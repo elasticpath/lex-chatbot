@@ -20,9 +20,9 @@
  */
 
 const AWS = require('aws-sdk');
-const dynamoDB = new AWS.DynamoDB.DocumentClient({ region: 'us-west-2' });
 const TABLE_NAME = process.env.CACHE_TABLE || 'lex-cache';
-const id = process.env.GUID;
+const TABLE_REGION = process.env.CACHE_REGION || 'us-west-2';
+const dynamoDB = new AWS.DynamoDB.DocumentClient({ region: TABLE_REGION });
 
 async function put(payload, sessionId) {
     // Time to live set to 1 minute after latest put request.

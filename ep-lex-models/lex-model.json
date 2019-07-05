@@ -11,13 +11,6 @@
       {
         "name": "PrevItemIntent",
         "version": "2",
-        "fulfillmentActivity": {
-          "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
-            "messageVersion": "1.0"
-          },
-          "type": "CodeHook"
-        },
         "sampleUtterances": [
           "show me the last item",
           "what was the last item",
@@ -30,13 +23,6 @@
       {
         "name": "RemoveFromCartIntent",
         "version": "2",
-        "fulfillmentActivity": {
-          "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
-            "messageVersion": "1.0"
-          },
-          "type": "CodeHook"
-        },
         "sampleUtterances": [
           "remove this item from my cart",
           "remove this from my cart",
@@ -74,13 +60,6 @@
         },
         "name": "AddToCartIntent",
         "version": "3",
-        "fulfillmentActivity": {
-          "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
-            "messageVersion": "1.0"
-          },
-          "type": "CodeHook"
-        },
         "sampleUtterances": [
           "Put it in my cart.",
           "Put {amount} in my cart.",
@@ -124,13 +103,6 @@
       {
         "name": "CheckoutCartIntent",
         "version": "2",
-        "fulfillmentActivity": {
-          "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
-            "messageVersion": "1.0"
-          },
-          "type": "CodeHook"
-        },
         "sampleUtterances": [
           "I'd like to checkout",
           "checkout my cart",
@@ -141,13 +113,6 @@
       {
         "name": "NextItemIntent",
         "version": "2",
-        "fulfillmentActivity": {
-          "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
-            "messageVersion": "1.0"
-          },
-          "type": "CodeHook"
-        },
         "sampleUtterances": [
           "show me something else",
           "what else do you have",
@@ -161,13 +126,6 @@
       {
         "name": "KeywordSearchIntent",
         "version": "2",
-        "fulfillmentActivity": {
-          "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
-            "messageVersion": "1.0"
-          },
-          "type": "CodeHook"
-        },
         "sampleUtterances": [
           "search for {searchKeyword}",
           "find {searchKeyword}",
@@ -196,13 +154,6 @@
       {
         "name": "DescribeStoreIntent",
         "version": "4",
-        "fulfillmentActivity": {
-          "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
-            "messageVersion": "1.0"
-          },
-          "type": "CodeHook"
-        },
         "sampleUtterances": [
           "what can i purchase in the store",
           "what can i buy in the store",
@@ -214,13 +165,6 @@
       {
         "name": "DescribeProductIntent",
         "version": "2",
-        "fulfillmentActivity": {
-          "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
-            "messageVersion": "1.0"
-          },
-          "type": "CodeHook"
-        },
         "sampleUtterances": [
           "give me more info about the product",
           "tell me about them",
@@ -238,13 +182,6 @@
       {
         "name": "GetCartIntent",
         "version": "3",
-        "fulfillmentActivity": {
-          "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
-            "messageVersion": "1.0"
-          },
-          "type": "CodeHook"
-        },
         "sampleUtterances": [
           "Go to the cart.",
           "Go to my cart.",
@@ -259,13 +196,6 @@
       {
         "name": "EPAuthIntent",
         "version": "19",
-        "fulfillmentActivity": {
-          "codeHook": {
-            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
-            "messageVersion": "1.0"
-          },
-          "type": "CodeHook"
-        },
         "sampleUtterances": [
           "ep-auth {token}",
           "hello ep"

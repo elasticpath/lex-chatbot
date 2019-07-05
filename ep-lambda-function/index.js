@@ -30,10 +30,9 @@ const DescribeProductHandler = require('./handlers/describeProduct.handler');
 const CheckoutCartHandler = require('./handlers/checkoutCart.handler');
 
 const { ElasticPathIntents } = require('./constants');
-const handler = require("./requestHandler");
 const sessionCart = [];
 
-// Temp cortex stuff for token tracking
+// Used for token tracking
 const cortex = require("./cortex");
 const cortexInstance = cortex.getCortexInstance();
 

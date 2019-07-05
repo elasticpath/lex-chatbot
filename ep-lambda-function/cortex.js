@@ -21,12 +21,12 @@
 
 const request = require("request-promise-native");
 
-const CORTEX_URL = process.env.CORTEX_URL;
-const GRANT_TYPE = process.env.GRANT_TYPE;
-const ROLE = process.env.ROLE;
-const SCOPE = process.env.SCOPE;
-const USERNAME = process.env.USERNAME;
-const PASSWORD = process.env.PASSWORD;
+const CORTEX_URL = process.env.CORTEX_URL || "http://reference.epdemos.com/cortex";
+const GRANT_TYPE = process.env.GRANT_TYPE || "password";
+const ROLE = process.env.ROLE || "PUBLIC";
+const SCOPE = process.env.SCOPE || "VESTRI";
+const USERNAME = process.env.USERNAME || "";
+const PASSWORD = process.env.PASSWORD || "";
 
 function Cortex(baseUrl, token) {
     this.cortexBaseUrl = baseUrl;

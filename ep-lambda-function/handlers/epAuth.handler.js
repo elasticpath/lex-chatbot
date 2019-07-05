@@ -36,10 +36,10 @@ const EPAuthHandler = async function (intentRequest, callback) {
     if (callingIntent !== ElasticPathIntents.EP_AUTH) {
         // Another intent was called before a token was aquired
         // NOTE - The sessionAttribute check in index.js is the only way this check would be true.
-        lexReply = "Please initialize the chatbot with command \"hello ep\"";
+        lexReply = lexResponses.epAuth.REQUIRE_TOKEN;
     } else if (sessionAttributes.token) {
         // Already has a token
-        lexReply = `Hello again!`;
+        lexReply = lexResponses.epAuth.GREETINGS;
     } else if (slots.token) {
         // Supplied a client-token
         sessionAttributes.token = slots.token;
@@ -52,7 +52,7 @@ const EPAuthHandler = async function (intentRequest, callback) {
             cortexInstance.token = await cortexInstance.requestToken();
         }
         sessionAttributes.token = cortexInstance.token;
-        lexReply = `Welcome to EP! How may I assist?`;
+        lexReply = lexResponses.epAuth.WELCOME;
     }
     
     // 4. Send confirmation with relevant case message.
