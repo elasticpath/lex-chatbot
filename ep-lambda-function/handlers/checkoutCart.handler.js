@@ -33,7 +33,12 @@ const CheckoutCartHandler = async function (intentRequest, callback) {
     	const totalPrice = checkoutResult['body']['monetary-total'][0]['display'];
     	checkoutDesc = 'Checkout complete!  Total price is ' + totalPrice;
     } else if (checkoutResult.body.type === 'needinfo'){
-    	checkoutDesc = checkoutResult['body']['debug-message'];
+        // Check if the session is a REGISTERED or PUBLIC
+        if (sessionAttributes.role == lexResponses.epAuth.REGISTERED) {
+            checkoutDesc = checkoutResult['body']['debug-message'];
+        } else {
+            checkoutDesc = lexResponses.generalResponse.PUBLIC_SERVICE;
+        }
     } else {
         checkoutDesc = lexResponses.generalResponse.EMPTY_CART;
     }

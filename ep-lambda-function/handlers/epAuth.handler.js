@@ -43,6 +43,7 @@ const EPAuthHandler = async function (intentRequest, callback) {
     } else if (slots.token) {
         // Supplied a client-token
         sessionAttributes.token = slots.token;
+        sessionAttributes.role = lexResponses.epAuth.REGISTERED;
         cortexInstance.token = sessionAttributes.token;
         lexReply = `Token received and set to ${sessionAttributes.token}`;
     } else {
@@ -52,6 +53,7 @@ const EPAuthHandler = async function (intentRequest, callback) {
             cortexInstance.token = await cortexInstance.requestToken();
         }
         sessionAttributes.token = cortexInstance.token;
+        sessionAttributes.role = lexResponses.epAuth.PUBLIC;
         lexReply = lexResponses.epAuth.WELCOME;
     }
     

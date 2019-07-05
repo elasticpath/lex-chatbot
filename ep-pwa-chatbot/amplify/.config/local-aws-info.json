@@ -1,0 +1,7 @@
+{
+    "epchat": {
+        "configLevel": "project",
+        "useProfile": true,
+        "profileName": "klawson"
+    }
+}

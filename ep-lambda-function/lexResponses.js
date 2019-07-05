@@ -13,7 +13,9 @@ module.exports.close = function (sessionAttributes, fulfillmentState, message) {
 module.exports.epAuth = {
     WELCOME: `Welcome to EP! How may I assist?`,
     GREETINGS: `Hello again!`,
-    REQUIRE_TOKEN: `Please initialize the chatbot with command "hello ep"`
+    REQUIRE_TOKEN: `Please initialize the chatbot with command "hello ep"`,
+    REGISTERED: `REGISTERED`,
+    PUBLIC: `PUBLIC`
 };
 
 // List transition messages
@@ -28,7 +30,8 @@ module.exports.generalResponse = {
     INVALID_SEARCH: `Invalid search terms. Please try again.`,
     NO_RESULTS: `No results found using those search terms.`,
     EMPTY_CART: `Your cart is currently empty.`,
-    EMPTY_LIST: `The product list is empty at the moment. Try searching for something first.`
+    EMPTY_LIST: `The product list is empty at the moment. Try searching for something first.`,
+    PUBLIC_SERVICE: `This service is unavailable to public users. Please register an account at vestri.com`
 };
 
 // Error code messages
