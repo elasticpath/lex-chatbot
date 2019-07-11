@@ -6,19 +6,39 @@
   },
   "resource": {
     "name": "EPConversationalInterface",
-    "version": "3",
+    "version": "4",
     "intents": [
       {
         "name": "PrevItemIntent",
-        "version": "2",
+        "version": "3",
         "sampleUtterances": [
           "show me the last item",
           "what was the last item",
           "previous item",
           "last",
-          "previous"
+          "previous",
+          "go back"
         ],
         "slots": []
+      },
+      {
+        "name": "Help",
+        "version": "2",
+        "fulfillmentActivity": {
+          "type": "ReturnIntent"
+        },
+        "sampleUtterances": [],
+        "slots": [],
+        "parentIntentSignature": "AMAZON.HelpIntent",
+        "conclusionStatement": {
+          "messages": [
+            {
+              "groupNumber": 1,
+              "contentType": "PlainText",
+              "content": "Begin a search by uttering \"search for [keyword]\"! When items in your list, you can ask to \"show me\" to learn more about the item."
+            }
+          ]
+        }
       },
       {
         "name": "RemoveFromCartIntent",
@@ -125,12 +145,16 @@
       },
       {
         "name": "KeywordSearchIntent",
-        "version": "2",
+        "version": "3",
         "sampleUtterances": [
           "search for {searchKeyword}",
           "find {searchKeyword}",
           "search",
-          "search for some {searchKeyword}"
+          "search for some {searchKeyword}",
+          "show me {searchKeyword}",
+          "find me {searchKeyword}",
+          "what do you have for {searchKeyword}",
+          "do you carry {searchKeyword}"
         ],
         "slots": [
           {
@@ -164,7 +188,7 @@
       },
       {
         "name": "DescribeProductIntent",
-        "version": "2",
+        "version": "3",
         "sampleUtterances": [
           "give me more info about the product",
           "tell me about them",
@@ -175,7 +199,8 @@
           "tell me more about the item",
           "describe this item",
           "describe it",
-          "what's that"
+          "what's that",
+          "show me"
         ],
         "slots": []
       },
@@ -195,9 +220,10 @@
       },
       {
         "name": "EPAuthIntent",
-        "version": "19",
+        "version": "22",
         "sampleUtterances": [
           "ep-auth {token}",
+          "{token}",
           "hello ep"
         ],
         "slots": [
