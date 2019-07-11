@@ -14,15 +14,6 @@ const botName = "EPConversationalInterface";
 localStorage.setItem('oauth', 'd3df9ce9-42c2-4a62-8e7a-2e216bdcec69');
 // const authInput = "ep-auth " + localStorage.getItem('oauth');
 
-// Imported default theme can be customized by overloading attributes
-// const myTheme = {
-//   ...AmplifyTheme,
-//   sectionHeader: {
-//     ...AmplifyTheme.sectionHeader,
-//     backgroundColor: '#00A2DE'
-//   }
-// };
-
 class App extends Component {
   // Set intial state of chatbot
   state = {
@@ -98,8 +89,6 @@ class App extends Component {
   // <img style={styles.img} src={currentImage} alt="Product" />
 
   render() {
-    // Model authentication can no longer be performed during render time.
-    // InvokeIntent(authInput);
     return (
       <div className="App">
         <header style={styles.header}>
@@ -124,6 +113,7 @@ class App extends Component {
     );
   }
 }
+
 
 // This function calls the intent defined by @param modelInput.
 async function InvokeIntent(utterance) {
@@ -184,7 +174,7 @@ const styles = {
   img: {
     height: `200px`,
     width : `200px`,
-    alignItems: 'center',
+    alignItems: 'center'
   }
 }
 
