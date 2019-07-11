@@ -23,6 +23,12 @@ const lexResponses = require('../lexResponses');
 const handler = require('../requestHandler');
 const cache = require('../dynamoCache');
 
+// Gather product data for response callback
+let productName;
+let productPrice;
+let productCode;
+let button;
+
 async function getReply(intentRequest) {
     const searchKeyword = intentRequest.currentIntent.slots.searchKeyword;
     
@@ -54,25 +60,35 @@ const KeywordSearchHandler = async function (intentRequest, callback) {
             lexReply = lexResponses.generalResponse.NO_RESULTS;
         } else {
             try {
+                let product = reply.response.curProduct;
                 const count = reply.response.curResponse.length;
-                const first = reply.response.curProduct._definition[0]['display-name'];
+                
+                // Variables to display response card
+                productName = product._definition[0]['display-name'];
+                productPrice = product._items[0]._element[0]._price[0]['list-price'][0].display;
+                productCode = product._items[0]._element[0]._code[0][`code`];
+                button = lexResponses.generateButton(`Add to cart`, `Add it to my cart`);
 
                 const resultText = count > 1 ? 'results' : 'result';
-                lexReply = `Okay. I found ${count} ${resultText} for ${searchKeyword}. The first result is:` + " " + `${JSON.stringify(first)}`;
+                lexReply = `Okay. I found ${count} ${resultText} for ${searchKeyword}. The first result is:` + " " + `${JSON.stringify(productName)}`;
                 
             } catch(e) {
                 console.error(e);
                 lexReply = lexResponses.generalResponse.NO_RESULTS;
             }
         }
-        
-        callback(
-            lexResponses.close(
-                sessionAttributes, 
-                'Fulfilled',
-                {"contentType": "PlainText", "content": lexReply}
-            )
-        );
+
+        callback(lexResponses.closeResponse(
+            sessionAttributes,
+            'Fulfilled',
+            { 'contentType': 'PlainText', 'content': `${lexReply}` },
+            productName,
+            productPrice,
+            `https://s3-us-west-2.amazonaws.com/elasticpath-demo-images/VESTRI_VIRTUAL_TMP/${productCode}.png`,
+            [
+                button
+            ]
+        ));
 };
 
 module.exports = KeywordSearchHandler;

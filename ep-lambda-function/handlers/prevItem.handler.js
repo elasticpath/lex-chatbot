@@ -23,19 +23,17 @@ const lexResponses = require('../lexResponses');
 const handler = require('../requestHandler');
 const cache = require('../dynamoCache');
 
-async function getReply(intentRequest) {
-
-    if (searchKeyword !== null && searchKeyword !== "") {
-            const response = await handler.handleSearchByKeyword(intentRequest);
-            return response;
-    }
-    
-    return `Invalid search terms. Please try again.`;
-}
+// Gather product data for response callback
+let productPrice;
+let productName = "";
+let productCode = 20005;
+let button;
 
 const PrevItemHandler = async function (intentRequest, callback) {
         let sessionAttributes = intentRequest.sessionAttributes;
+
         let lexReply = "";
+
         const reply = await cache.fetch(intentRequest.sessionAttributes.token);
         
         if (reply === "" || reply.statusCode === 404) {
@@ -55,6 +53,25 @@ const PrevItemHandler = async function (intentRequest, callback) {
 
                         await handler.handlePrevItem(intentRequest, curResponse, newItem, newIndex, curCart);
 
+                        // Build response-card based on isCart return
+                        if (!curCart) {
+                            productName = newItem._definition[0]['display-name'];
+
+                            // Check for price availability
+                            if (newItem._items[0]._element[0]._price) {
+                                productPrice = newItem._items[0]._element[0]._price[0]['list-price'][0].display;
+                            } else {
+                                productPrice = "Unavailable";
+                            }
+                            productCode = newItem._items[0]._element[0]._code[0][`code`];
+                            button = lexResponses.generateButton(`Add to cart`, `Add it to my cart`);
+                        } else {
+                            productName = newItem._definition[0]['display-name'];
+                            productPrice = newItem._price[0]['list-price'][0].display;
+                            productCode = newItem._code[0][`code`];
+                            button = lexResponses.generateButton(`Remove from cart`, `Remove this from my cart`);
+                        }
+
                         lexReply = `Okay! Item number ${newIndex + 1} is:` + " " + `${JSON.stringify(currentName)}`;
                     } else {
                         lexReply = lexResponses.list.START_OF_LIST;
@@ -68,13 +85,25 @@ const PrevItemHandler = async function (intentRequest, callback) {
             }
         }
 
-        callback(
-            lexResponses.close(
-                sessionAttributes, 
-                'Fulfilled',
-                {"contentType": "PlainText", "content": lexReply}
-            )
-        );
+        callback(lexResponses.closeResponse(
+            sessionAttributes,
+            'Fulfilled',
+            { 'contentType': 'PlainText', 'content': `${lexReply}` },
+            productName,
+            productPrice,
+            `https://s3-us-west-2.amazonaws.com/elasticpath-demo-images/VESTRI_VIRTUAL_TMP/${productCode}.png`,
+            [
+                button
+            ]
+        ));
+
+        // callback(
+        //     lexResponses.close(
+        //         sessionAttributes, 
+        //         'Fulfilled',
+        //         {"contentType": "PlainText", "content": lexReply}
+        //     )
+        // );
 };
 
 module.exports = PrevItemHandler;

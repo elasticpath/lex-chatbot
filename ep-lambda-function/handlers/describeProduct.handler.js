@@ -34,8 +34,13 @@ async function getReply(currentCode) {
 const DescribeProductHandler = async function (intentRequest, callback) {
     const sessionAttributes = intentRequest.sessionAttributes;
     const reply = await cache.fetch(intentRequest.sessionAttributes.token);
-    let lexResponse = "";
+    let lexReply = "Product Description";
+    
+    // Gather product data for callback
     let product;
+    let productPrice;
+    let productDesc;
+    let productName = "";
     
     // 1. Check to see if there is a response from the cache
     if (reply.response) {
@@ -50,36 +55,35 @@ const DescribeProductHandler = async function (intentRequest, callback) {
              return lexResponses.generalResponse.INVALID_SEARCH;
         }
         
-        // 5. Assign it's name, description, and price from response
-        let productName = product._definition[0]['display-name'];
-    
-        let productDesc = product._definition[0].details[0]['display-value'];
-        let productPrice;
+        // 4. Assign it's name, description, and price from response
+        productName = product._definition[0]['display-name'];
+        productDesc = product._definition[0].details[0]['display-value'];
 
-        // 6. Check if we are describing in cart, or in product list.
+        // 5. Check if we are describing in cart, or in product list.
         if (reply.response.isCart) {
             productPrice = product._price[0]['list-price'][0].display;
-            lexResponse = `${productName} costs ${productPrice}. \n${productDesc}`;
+            lexReply = `${productName} costs ${productPrice}. \n${productDesc}`;
         } else {
             // Check if pricing is available.
             if (product._items[0]._element[0]._price) {
                 productPrice = product._items[0]._element[0]._price[0]['list-price'][0].display;
-                lexResponse = `${productName} costs ${productPrice}. \n${productDesc}`;
+                lexReply = `${productName} costs ${productPrice}. \n${productDesc}`;
             } else {
-                lexResponse = `${productName}'s price is currently unavailable. \n${productDesc}`;
+                lexReply = `${productName}'s price is currently unavailable. \n${productDesc}`;
+                productPrice = "Unavailable";
             }
         }
     } else {
-        lexResponse = lexResponses.generalResponse.EMPTY_LIST;
+        lexReply = lexResponses.generalResponse.EMPTY_LIST;
     }
-    
-    callback(lexResponses.close(sessionAttributes,
-        'Fulfilled',
-        {
-            'contentType': 'PlainText',
-            'content': `${lexResponse}`
-            
-        }));
+
+    callback(
+        lexResponses.close(
+            sessionAttributes, 
+            'Fulfilled',
+            {"contentType": "PlainText", "content": lexReply}
+        )
+    );
 };
 
 module.exports = DescribeProductHandler;

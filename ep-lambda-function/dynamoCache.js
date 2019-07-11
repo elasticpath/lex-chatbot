@@ -23,10 +23,11 @@ const AWS = require('aws-sdk');
 const TABLE_NAME = process.env.CACHE_TABLE || 'lex-cache';
 const TABLE_REGION = process.env.CACHE_REGION || 'us-west-2';
 const dynamoDB = new AWS.DynamoDB.DocumentClient({ region: TABLE_REGION });
+const TIME_TO_LIVE = 60; // In seconds
 
 async function put(payload, sessionId) {
     // Time to live set to 1 minute after latest put request.
-    let time = Math.floor(Date.now() / 1000) + 60;
+    let time = Math.floor(Date.now() / 1000) + TIME_TO_LIVE;
     // console.log(`In DynamoPut: TTL ${time}`);
     let params = {
         TableName : TABLE_NAME,

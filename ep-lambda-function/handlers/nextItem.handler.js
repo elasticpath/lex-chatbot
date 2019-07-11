@@ -23,6 +23,12 @@ const lexResponses = require('../lexResponses');
 const handler = require('../requestHandler');
 const cache = require('../dynamoCache');
 
+// Gather product data for response callback
+let productPrice;
+let productName = "";
+let productCode = 20005;
+let button;
+
 const NextItemHandler = async function (intentRequest, callback) {
         let sessionAttributes = intentRequest.sessionAttributes;
         
@@ -43,12 +49,29 @@ const NextItemHandler = async function (intentRequest, callback) {
                         const newItem = reply.response.curResponse[newIndex];
                         const currentName = newItem._definition[0]['display-name'];
 
-                        // const first = newItem._definition[0]['display-name'];
-
                         const curResponse = reply.response.curResponse;
                         const curCart = reply.response.isCart;
 
                         await handler.handleNextItem(intentRequest, curResponse, newItem, newIndex, curCart);
+
+                        // Build response-card based on isCart return
+                        if (!curCart) {
+                            productName = newItem._definition[0]['display-name'];
+
+                            // Check for price availability
+                            if (newItem._items[0]._element[0]._price) {
+                                productPrice = newItem._items[0]._element[0]._price[0]['list-price'][0].display;
+                            } else {
+                                productPrice = "Unavailable";
+                            }
+                            productCode = newItem._items[0]._element[0]._code[0][`code`];
+                            button = lexResponses.generateButton(`Add to cart`, `Add it to my cart`);
+                        } else {
+                            productName = newItem._definition[0]['display-name'];
+                            productPrice = newItem._price[0]['list-price'][0].display;
+                            productCode = newItem._code[0][`code`];
+                            button = lexResponses.generateButton(`Remove from cart`, `Remove this from my cart`);
+                        }
 
                         lexReply = `Okay! Item number ${newIndex + 1} is:` + " " + `${JSON.stringify(currentName)}`;
                     } else {
@@ -63,13 +86,17 @@ const NextItemHandler = async function (intentRequest, callback) {
             }
         }
 
-        callback(
-            lexResponses.close(
-                sessionAttributes, 
-                'Fulfilled',
-                {"contentType": "PlainText", "content": lexReply}
-            )
-        );
+        callback(lexResponses.closeResponse(
+            sessionAttributes,
+            'Fulfilled',
+            { 'contentType': 'PlainText', 'content': `${lexReply}` },
+            productName,
+            productPrice,
+            `https://s3-us-west-2.amazonaws.com/elasticpath-demo-images/VESTRI_VIRTUAL_TMP/${productCode}.png`,
+            [
+                button
+            ]
+        ));
 };
 
 module.exports = NextItemHandler;
