@@ -25,7 +25,7 @@ class App extends Component {
 
   render() {
     // Model authentication can be performed during render time.
-    AuthenticateModel();
+    // AuthenticateModel();
     return (
       <div className="App">
         <ChatBot
@@ -44,6 +44,7 @@ class App extends Component {
 }
 
 // This function should be called upon render to initiate an auth intent.
+// If not called, the chatbot service will require initialization to generate a bearer token as a public shopper
 async function AuthenticateModel() {
   // TEMP - Sets a local storage variable for consumption.
   localStorage.setItem('oauth', 'e96b9ab6-c834-48f3-a40a-1574a5175f38');
