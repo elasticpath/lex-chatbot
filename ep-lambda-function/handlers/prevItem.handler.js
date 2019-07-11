@@ -96,14 +96,6 @@ const PrevItemHandler = async function (intentRequest, callback) {
                 button
             ]
         ));
-
-        // callback(
-        //     lexResponses.close(
-        //         sessionAttributes, 
-        //         'Fulfilled',
-        //         {"contentType": "PlainText", "content": lexReply}
-        //     )
-        // );
 };
 
 module.exports = PrevItemHandler;

@@ -75,13 +75,6 @@ const GetCartHandler = async function (intentRequest, callback, sessionCart) {
             button
         ]
     ));
-    // callback(
-    //     lexResponses.close(
-    //         sessionAttributes, 
-    //         'Fulfilled',
-    //         {"contentType": "PlainText", "content": lexReply}
-    //     )
-    // );
 };
 
 module.exports = GetCartHandler;

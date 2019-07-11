@@ -25,7 +25,7 @@ class App extends Component {
 
   render() {
     // Model authentication can be performed during render time.
-    // AuthenticateModel();
+    AuthenticateModel();
     return (
       <div className="App">
         <ChatBot
