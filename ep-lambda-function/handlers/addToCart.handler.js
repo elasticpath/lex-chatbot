@@ -26,11 +26,11 @@ const cache = require('../dynamoCache');
 const AddToCartHandler = async function (intentRequest, callback) {
         const sessionAttributes = intentRequest.sessionAttributes;
         const reply = await cache.fetch(intentRequest.sessionAttributes.token);
-        let lexResponse = "";
+        let lexReply = "";
         let product;
-        
+
         // Check to see if cache returns a response.
-        if (reply.response) {
+        if (reply.response && !reply.response.isCart) {
             product = reply.response.curProduct;
             // Get current item in cache
             const currentCode = product['_items'][0]['_element'][0]['_code'][0]['code'];
@@ -40,20 +40,22 @@ const AddToCartHandler = async function (intentRequest, callback) {
             // Check to see if the item is available
             if (product._items[0]._element[0]._price) {
                 await handler.handleAddtoCart(currentCode, amount);
-                lexResponse = `I've added ${amount} of "${displayName}" to your cart.`;
+                lexReply = `I've added ${amount} of "${displayName}" to your cart.`;
             } else {
-                lexResponse = lexResponses.generalResponse.ITEM_UNAVAILABLE;
+                lexReply = lexResponses.generalResponse.ITEM_UNAVAILABLE;
             }
+        } else if(reply.response.isCart) {
+            lexReply = lexResponses.generalResponse.NOT_IN_LIST;
         } else {
             // Inform that the session data may have expired
-            lexResponse = lexResponses.generalResponse.EXPIRED_SESSION;
+            lexReply = lexResponses.generalResponse.EXPIRED_SESSION;
         }
     
         callback(
             lexResponses.close(
                 sessionAttributes, 
                 'Fulfilled',
-                {"contentType": "PlainText", "content": lexResponse}
+                {"contentType": "PlainText", "content": lexReply}
             )
         );
 };

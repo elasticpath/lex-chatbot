@@ -32,19 +32,20 @@ let button;
 // Builds and returns the relevant Lex Reply based on the state of the cart.
 async function getCartTotal (intentRequest) {
     const response = await handler.handleGetCart(intentRequest);
-    product = response['body']['_defaultcart'][0]['_lineitems'][0]['_element'][0]['_item'][0];
-    
+
     // Error handling for 401 - missing roles
     if (response[`body`][`statusCode`] === 401) {
         return lexResponses.errorCodes.ERROR_401;
     } else {
         try {
+            console.log(`Checking cart quantity`);
             const totalQuant = response['body']['_defaultcart'][0]['total-quantity'];
             if (totalQuant === 0) {
                 return lexResponses.generalResponse.EMPTY_CART;
             }
 
             const totalPrice = response['body']['_defaultcart'][0]['_total'][0]['cost'][0]['display'];
+            product = response['body']['_defaultcart'][0]['_lineitems'][0]['_element'][0]['_item'][0];
 
             // Variables to display response card:
             productName = product._definition[0]['display-name'];
@@ -70,7 +71,7 @@ const GetCartHandler = async function (intentRequest, callback, sessionCart) {
         { 'contentType': 'PlainText', 'content': `${lexReply}` },
         productName,
         productPrice,
-        `https://s3-us-west-2.amazonaws.com/elasticpath-demo-images/VESTRI_VIRTUAL_TMP/${productCode}.png`,
+        process.env.SKU_IMAGES_URL+`${productCode}.png`,
         [
             button
         ]

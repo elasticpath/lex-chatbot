@@ -1,3 +1,24 @@
+/**
+ * Copyright © 2018 Elastic Path Software Inc. All rights reserved.
+ *
+ * This is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this license. If not, see
+ *
+ *     https://www.gnu.org/licenses/
+ *
+ *
+ */
+
 // Lex fulfillment to close intent
 module.exports.close = function (sessionAttributes, fulfillmentState, message) {
     return {
@@ -53,6 +74,8 @@ module.exports.generalResponse = {
     INVALID_SEARCH: `Invalid search terms. Please try again.`,
     NO_RESULTS: `No results found using those search terms.`,
     EMPTY_CART: `Your cart is currently empty.`,
+    NOT_IN_CART: `You are not currently in your cart.`,
+    NOT_IN_LIST: `You are not currently in the product list.`,
     EMPTY_LIST: `The product list is empty at the moment. Try searching for something first.`,
     ITEM_UNAVAILABLE: `This product is currently unavailable.`,
     PUBLIC_SERVICE: `This service is unavailable to public users. Please register an account at vestri.com`

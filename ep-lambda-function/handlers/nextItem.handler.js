@@ -92,7 +92,7 @@ const NextItemHandler = async function (intentRequest, callback) {
             { 'contentType': 'PlainText', 'content': `${lexReply}` },
             productName,
             productPrice,
-            `https://s3-us-west-2.amazonaws.com/elasticpath-demo-images/VESTRI_VIRTUAL_TMP/${productCode}.png`,
+            process.env.SKU_IMAGES_URL+`${productCode}.png`,
             [
                 button
             ]

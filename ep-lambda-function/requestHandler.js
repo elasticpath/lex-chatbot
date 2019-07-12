@@ -182,7 +182,6 @@ async function handleCheckoutCart(event) {
     }
 }
 
-
 module.exports.handleAddtoCart = handleAddtoCart;
 module.exports.handleCheckoutCart = handleCheckoutCart;
 module.exports.handleDescribeProduct = handleDescribeProduct;

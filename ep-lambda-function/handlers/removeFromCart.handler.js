@@ -31,6 +31,8 @@ const RemoveFromCartHandler = async function (intentRequest, callback) {
 
     if (!reply || reply.statusCode === 404) {
         lexReply = lexResponses.errorCodes.ERROR_404;
+    } else if (!reply.response.isCart) {
+        lexReply = lexResponses.generalResponse.NOT_IN_CART;
     } else {
         try {
             let sku = reply.response.curProduct['_code'][0]['code'];

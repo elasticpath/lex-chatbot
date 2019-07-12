@@ -6,24 +6,24 @@
   },
   "resource": {
     "name": "EPConversationalInterface",
-    "version": "4",
+    "version": "5",
     "intents": [
       {
         "name": "PrevItemIntent",
-        "version": "3",
+        "version": "4",
         "sampleUtterances": [
           "show me the last item",
           "what was the last item",
           "previous item",
-          "last",
           "previous",
-          "go back"
+          "go back",
+          "last"
         ],
         "slots": []
       },
       {
         "name": "Help",
-        "version": "2",
+        "version": "6",
         "fulfillmentActivity": {
           "type": "ReturnIntent"
         },
@@ -34,21 +34,22 @@
           "messages": [
             {
               "groupNumber": 1,
-              "contentType": "PlainText",
-              "content": "Begin a search by uttering \"search for [keyword]\"! When items in your list, you can ask to \"show me\" to learn more about the item."
+              "contentType": "CustomPayload",
+              "content": "First, begin a search by some keyword! \nWhen we find items for your list, you can ask to describe it to \nlearn more about the item. \n\nAt any time, you can check what is in your cart. \nWhen you are finsihed shopping, you can checkout your cart."
             }
           ]
         }
       },
       {
         "name": "RemoveFromCartIntent",
-        "version": "2",
+        "version": "3",
         "sampleUtterances": [
           "remove this item from my cart",
           "remove this from my cart",
           "remove from my cart",
           "remove from cart",
-          "remove {code}"
+          "remove that",
+          "remove"
         ],
         "slots": [
           {
@@ -132,11 +133,12 @@
       },
       {
         "name": "NextItemIntent",
-        "version": "2",
+        "version": "3",
         "sampleUtterances": [
           "show me something else",
           "what else do you have",
           "show me the next item",
+          "go forward",
           "what's next",
           "next item",
           "next"
@@ -145,16 +147,16 @@
       },
       {
         "name": "KeywordSearchIntent",
-        "version": "3",
+        "version": "7",
         "sampleUtterances": [
-          "search for {searchKeyword}",
-          "find {searchKeyword}",
-          "search",
+          "what do you have for {searchKeyword}",
+          "do you carry {searchKeyword}",
+          "do you have {searchKeyword}",
           "search for some {searchKeyword}",
           "show me {searchKeyword}",
           "find me {searchKeyword}",
-          "what do you have for {searchKeyword}",
-          "do you carry {searchKeyword}"
+          "find {searchKeyword}",
+          "search for {searchKeyword}"
         ],
         "slots": [
           {
@@ -174,17 +176,6 @@
             "name": "searchKeyword"
           }
         ]
-      },
-      {
-        "name": "DescribeStoreIntent",
-        "version": "4",
-        "sampleUtterances": [
-          "what can i purchase in the store",
-          "what can i buy in the store",
-          "what do you sell in the store",
-          "what do you have in the store"
-        ],
-        "slots": []
       },
       {
         "name": "DescribeProductIntent",
