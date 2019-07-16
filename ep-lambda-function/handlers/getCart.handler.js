@@ -24,22 +24,28 @@ const handler = require('../requestHandler');
 
 // Gather product data for response callback
 let product;
-let productName;
 let productPrice;
+let productName;
+let productQty;
 let productCode;
+let totalQuant;
 let button;
 
+// Used to ensure response cards aren't shown if list is empty.
+let showResponseCard;
+
 // Builds and returns the relevant Lex Reply based on the state of the cart.
-async function getCartTotal (intentRequest) {
+async function getCartMessage (intentRequest) {
+    showResponseCard = false;
     const response = await handler.handleGetCart(intentRequest);
+    const firstItem = await handler.handleGetCartItem(0);
 
     // Error handling for 401 - missing roles
     if (response[`body`][`statusCode`] === 401) {
         return lexResponses.errorCodes.ERROR_401;
     } else {
         try {
-            console.log(`Checking cart quantity`);
-            const totalQuant = response['body']['_defaultcart'][0]['total-quantity'];
+            totalQuant = response['body']['_defaultcart'][0]['total-quantity'];
             if (totalQuant === 0) {
                 return lexResponses.generalResponse.EMPTY_CART;
             }
@@ -49,11 +55,12 @@ async function getCartTotal (intentRequest) {
 
             // Variables to display response card:
             productName = product._definition[0]['display-name'];
-            productPrice = product._price[0]['list-price'][0].display;
+            productQty = firstItem['body']['quantity'];
+            productPrice = product._price[0]['list-price'][0].display  + ` - Qty: ${productQty}`;
             productCode = product._code[0][`code`];
             button = lexResponses.generateButton(`Remove from cart`, `Remove this from my cart`);
-        
-            return `You have ${totalQuant} items in cart. Total cost is: ${totalPrice}. The first item is ${productName}`;
+            showResponseCard = true;
+            return `You have ${totalQuant} items in cart. Total cost is: ${totalPrice}. The first item is ${productName}. You have ${productQty} of them.`;
         } catch(e) {
             console.error(e);
             return lexResponses.generalResponse.EXPIRED_SESSION;
@@ -63,19 +70,32 @@ async function getCartTotal (intentRequest) {
 
 const GetCartHandler = async function (intentRequest, callback, sessionCart) {
     const sessionAttributes = intentRequest.sessionAttributes;
-    const lexReply = await getCartTotal(intentRequest);
+    const lexReply = await getCartMessage(intentRequest);
     
-    callback(lexResponses.closeResponse(
-        sessionAttributes,
-        'Fulfilled',
-        { 'contentType': 'PlainText', 'content': `${lexReply}` },
-        productName,
-        productPrice,
-        process.env.SKU_IMAGES_URL+`${productCode}.png`,
-        [
-            button
-        ]
-    ));
+    // Return response card if SKU_IMAGE_URL is provided. Otherwise, return plaintext.
+    if (process.env.SKU_IMAGES_URL && showResponseCard) {
+        // Case that a response card should be displayed
+        callback(lexResponses.closeResponse(
+            sessionAttributes,
+            'Fulfilled',
+            { 'contentType': 'PlainText', 'content': `${lexReply}` },
+            productName,
+            productPrice,
+            process.env.SKU_IMAGES_URL+`${productCode}.png`,
+            [
+                button
+            ]
+        ));
+    } else {
+        // Case that a plaintext response should be displayed.
+        callback(
+            lexResponses.close(
+                sessionAttributes, 
+                'Fulfilled',
+                {"contentType": "PlainText", "content": lexReply}
+            )
+        );
+    }
 };
 
 module.exports = GetCartHandler;

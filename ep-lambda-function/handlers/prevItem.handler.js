@@ -25,66 +25,77 @@ const cache = require('../dynamoCache');
 
 // Gather product data for response callback
 let productPrice;
-let productName = "";
-let productCode = 20005;
+let productName;
+let productQty;
+let productCode;
 let button;
 
+// Used to ensure response cards aren't shown at end of list.
+let showResponseCard;
+
 const PrevItemHandler = async function (intentRequest, callback) {
-        let sessionAttributes = intentRequest.sessionAttributes;
+    showResponseCard = false;
+    let sessionAttributes = intentRequest.sessionAttributes;
 
-        let lexReply = "";
+    let lexReply = "";
 
-        const reply = await cache.fetch(intentRequest.sessionAttributes.token);
-        
-        if (reply === "" || reply.statusCode === 404) {
-            lexReply = lexResponses.errorCodes.ERROR_404;
-        } else {
-            try {
-                const currentIndex = reply.response.curProductIndex;
+    const reply = await cache.fetch(intentRequest.sessionAttributes.token);
+    
+    if (reply === "" || reply.statusCode === 404) {
+        lexReply = lexResponses.errorCodes.ERROR_404;
+    } else {
+        try {
+            const currentIndex = reply.response.curProductIndex;
 
-                if (currentIndex !== null) {
-                    const newIndex = currentIndex - 1;
-                    if (newIndex >= 0) {
-                        const newItem = reply.response.curResponse[newIndex];
-                        const currentName = newItem._definition[0]['display-name'];
+            if (currentIndex !== null) {
+                const newIndex = currentIndex - 1;
+                if (newIndex >= 0) {
+                    showResponseCard = true;
+                    const newItem = reply.response.curResponse[newIndex];
+                    const currentName = newItem._definition[0]['display-name'];
 
-                        const curResponse = reply.response.curResponse;
-                        const curCart = reply.response.isCart;
+                    const curResponse = reply.response.curResponse;
+                    const curCart = reply.response.isCart;
 
-                        await handler.handlePrevItem(intentRequest, curResponse, newItem, newIndex, curCart);
+                    await handler.handlePrevItem(intentRequest, curResponse, newItem, newIndex, curCart);
 
-                        // Build response-card based on isCart return
-                        if (!curCart) {
-                            productName = newItem._definition[0]['display-name'];
+                    // Build response-card based on if the cart is being displayed
+                    if (!curCart) {
+                        productName = newItem._definition[0]['display-name'];
 
-                            // Check for price availability
-                            if (newItem._items[0]._element[0]._price) {
-                                productPrice = newItem._items[0]._element[0]._price[0]['list-price'][0].display;
-                            } else {
-                                productPrice = "Unavailable";
-                            }
-                            productCode = newItem._items[0]._element[0]._code[0][`code`];
-                            button = lexResponses.generateButton(`Add to cart`, `Add it to my cart`);
+                        // Check for price availability
+                        if (newItem._items[0]._element[0]._price) {
+                            productPrice = newItem._items[0]._element[0]._price[0]['list-price'][0].display;
                         } else {
-                            productName = newItem._definition[0]['display-name'];
-                            productPrice = newItem._price[0]['list-price'][0].display;
-                            productCode = newItem._code[0][`code`];
-                            button = lexResponses.generateButton(`Remove from cart`, `Remove this from my cart`);
+                            productPrice = "Unavailable";
                         }
-
-                        lexReply = `Okay! Item number ${newIndex + 1} is:` + " " + `${JSON.stringify(currentName)}`;
+                        productCode = newItem._items[0]._element[0]._code[0][`code`];
+                        button = lexResponses.generateButton(`Add to cart`, `Add it to my cart`);
+                        lexReply = `Okay! Item number ${newIndex + 1} is: ${JSON.stringify(currentName)}.`;
                     } else {
-                        lexReply = lexResponses.list.START_OF_LIST;
-                    }
+                        const cartItem = await handler.handleGetCartItem(newIndex);
+                        productName = cartItem['body']._item[0]._definition[0]['display-name'];
+                        productQty = cartItem['body']['quantity'];
+                        productPrice = cartItem['body']._item[0]._price[0]['list-price'][0].display + ` - Qty: ${productQty}`;
+                        productCode = cartItem['body']._item[0]._code[0][`code`];
+                        button = lexResponses.generateButton(`Remove from cart`, `Remove this from my cart`);
+                        lexReply = `Okay! Item number ${newIndex + 1} is: ${JSON.stringify(currentName)}. You have ${productQty} of them.`;
+                    }   
                 } else {
-                    lexReply = lexResponses.generalResponse.EMPTY_LIST;
+                    lexReply = lexResponses.list.START_OF_LIST;
                 }
-            } catch(e) {
-                console.log(e);
-                lexReply = lexResponses.generalResponse.EXPIRED_SESSION;
+            } else {
+                lexReply = lexResponses.generalResponse.EMPTY_LIST;
             }
+        } catch(e) {
+            console.error(e);
+            lexReply = lexResponses.generalResponse.EXPIRED_SESSION;
         }
+    }
 
+    // Return response card if SKU_IMAGE_URL is provided. Otherwise, return plaintext.
+    if (process.env.SKU_IMAGES_URL && showResponseCard) {
+        // Case that an image URL was provided.
         callback(lexResponses.closeResponse(
             sessionAttributes,
             'Fulfilled',
@@ -96,6 +107,16 @@ const PrevItemHandler = async function (intentRequest, callback) {
                 button
             ]
         ));
+    } else {
+        // Case that an image URL is not provided
+        callback(
+            lexResponses.close(
+                sessionAttributes, 
+                'Fulfilled',
+                {"contentType": "PlainText", "content": lexReply}
+            )
+        );
+    }
 };
 
 module.exports = PrevItemHandler;

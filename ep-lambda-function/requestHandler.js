@@ -5,7 +5,6 @@ const cache = require("./dynamoCache");
 
 async function handleSearchByKeyword(event) {
     try {
-        // console.log(`In keywordSearchHandler: ${cortexInstance.token}`);
         let result = await cortexInstance.getItemsByKeyword(event.currentIntent.slots.searchKeyword);
         
         const cacheEntry = {
@@ -146,6 +145,26 @@ async function handleGetCart(event) {
     }
 }
 
+async function handleGetCartItem(curIndex) {
+    try {
+        let result = await cortexInstance.getCartItems();
+        const item = result['_defaultcart'][0]['_lineitems'][0]['_element'][curIndex];
+        
+        const response = {
+            statusCode: 200,
+            body: item
+        };
+        return response;
+    } catch(e) {
+        console.error(e);
+        const response = {
+            statusCode: 404,
+            body: e
+        }
+        return response;
+    }
+}
+
 async function handleRemoveFromCart(sku) {
     try {
         let result = await cortexInstance.cortexDeleteFromCart(sku);
@@ -186,6 +205,7 @@ module.exports.handleAddtoCart = handleAddtoCart;
 module.exports.handleCheckoutCart = handleCheckoutCart;
 module.exports.handleDescribeProduct = handleDescribeProduct;
 module.exports.handleGetCart = handleGetCart;
+module.exports.handleGetCartItem = handleGetCartItem;
 module.exports.handleNextItem = handleNextItem;
 module.exports.handlePrevItem = handlePrevItem;
 module.exports.handleRemoveFromCart = handleRemoveFromCart;

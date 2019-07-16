@@ -44,7 +44,7 @@ const AddToCartHandler = async function (intentRequest, callback) {
             } else {
                 lexReply = lexResponses.generalResponse.ITEM_UNAVAILABLE;
             }
-        } else if(reply.response.isCart) {
+        } else if(reply.response && reply.response.isCart) {
             lexReply = lexResponses.generalResponse.NOT_IN_LIST;
         } else {
             // Inform that the session data may have expired
