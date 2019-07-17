@@ -37,7 +37,6 @@ const RemoveFromCartHandler = async function (intentRequest, callback) {
     let button;
 
     const reply = await cache.fetch(intentRequest.sessionAttributes.token);
-    console.log(JSON.stringify(reply));
 
     // Ensure reply is not undefined before removing.
     if (!reply) {
@@ -69,17 +68,22 @@ const RemoveFromCartHandler = async function (intentRequest, callback) {
                 await handler.handleRemoveFromCart(sku);
 
                 // 3. Get the updated cart for the cache.
-                await handler.handleGetCart(intentRequest);
-                cartItem = await handler.handleGetCartItem(0);
-                
-                // 4. Get the new item replaced at curIndex.
-                productName = cartItem['body']._item[0]._definition[0]['display-name'];
-                productQty = cartItem['body']['quantity'];
-                productPrice = cartItem['body']._item[0]._price[0]['list-price'][0].display + ` - Qty: ${productQty}`;
-                productCode = cartItem['body']._item[0]._code[0][`code`];
-                button = lexResponses.generateButton(`Remove from cart`, `Remove this from my cart`);
+                currentCart = await handler.handleGetCart(intentRequest);
 
-                lexReply = `${removedName} has been removed from your cart. You are now viewing ${productName}.`;
+                // 4. Check if cart is now empty
+                if (currentCart['body']['_defaultcart'][0]['total-quantity'] <= 0) {
+                    lexReply = `${removedName} has been removed from your cart. Your cart is now empty.`;
+                } else {
+                    // 5. If cart isn't empty, get the new item replaced and display.
+                    cartItem = await handler.handleGetCartItem(0);
+                    productName = cartItem['body']._item[0]._definition[0]['display-name'];
+                    productQty = cartItem['body']['quantity'];
+                    productPrice = cartItem['body']._item[0]._price[0]['list-price'][0].display + ` - Qty: ${productQty}`;
+                    productCode = cartItem['body']._item[0]._code[0][`code`];
+                    button = lexResponses.generateButton(`Remove from cart`, `Remove this from my cart`);
+    
+                    lexReply = `${removedName} has been removed from your cart. You are now viewing ${productName}.`;
+                }
             }
         } catch(e) {
             lexReply = lexResponses.generalResponse.EXPIRED_SESSION;
