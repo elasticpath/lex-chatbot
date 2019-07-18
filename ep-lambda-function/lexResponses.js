@@ -19,6 +19,9 @@
  *
  */
 
+// Constant values
+HOST_URL = process.env.HOST_URL || "the host provider's website";
+
 // Lex fulfillment to close intent
 module.exports.close = function (sessionAttributes, fulfillmentState, message) {
     return {
@@ -70,7 +73,7 @@ module.exports.generateButton = function(text, value) {
 
 // General Response Messages
 module.exports.generalResponse = {
-    EXPIRED_SESSION: `Unable to perform task, as your session may have ended. You can start a new search to refresh your session.`,
+    EXPIRED_SESSION: `No product list is currently being viewed. You can start a new search to refresh your session.`,
     INVALID_SEARCH: `Invalid search terms. Please try again.`,
     NO_RESULTS: `No results found using those search terms.`,
     EMPTY_CART: `Your cart is currently empty.`,
@@ -78,7 +81,8 @@ module.exports.generalResponse = {
     NOT_IN_LIST: `You are not currently in the product list. Try searching for something first.`,
     EMPTY_LIST: `The product list is empty at the moment. Try searching for something first.`,
     ITEM_UNAVAILABLE: `This product is currently unavailable.`,
-    PUBLIC_SERVICE: `This service is unavailable to public users. Please register an account at vestri.com`
+    PUBLIC_SERVICE: `This service is unavailable to public users. Please register an account at ${process.env.HOST_URL}.`,
+    ACCOUNT_MANAGEMENT: `Your account can be managed at ${process.env.HOST_URL}.`
 };
 
 // Auth and Invocation messages

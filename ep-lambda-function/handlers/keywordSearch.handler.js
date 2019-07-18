@@ -82,9 +82,9 @@ const KeywordSearchHandler = async function (intentRequest, callback) {
         }
     }
 
-    // Return response card if SKU_IMAGE_URL is provided. Otherwise, return plaintext.
+    // Return response card if it is required. Otherwise, return plaintext.
     if (process.env.SKU_IMAGES_URL && showResponseCard) {
-        // Case that an image URL was provided.
+        // Case that a response card should be displayed
         callback(lexResponses.closeResponse(
             sessionAttributes,
             'Fulfilled',

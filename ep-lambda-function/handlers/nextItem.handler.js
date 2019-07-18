@@ -74,6 +74,7 @@ const NextItemHandler = async function (intentRequest, callback) {
                         button = lexResponses.generateButton(`Add to cart`, `Add it to my cart`);
                         lexReply = `Okay! Item number ${newIndex + 1} is: ${JSON.stringify(currentName)}.`;
                     } else {
+                        // Response card for cart view.
                         const cartItem = await handler.handleGetCartItem(newIndex);
                         productName = cartItem['body']._item[0]._definition[0]['display-name'];
                         productQty = cartItem['body']['quantity'];
@@ -94,9 +95,9 @@ const NextItemHandler = async function (intentRequest, callback) {
         }
     }
 
-    // Return response card if SKU_IMAGE_URL is provided. Otherwise, return plaintext.
+    // Return response card if it is required. Otherwise, return plaintext.
     if (process.env.SKU_IMAGES_URL && showResponseCard) {
-        // Case that an image URL was provided.
+        // Case that a response card should be displayed
         callback(lexResponses.closeResponse(
             sessionAttributes,
             'Fulfilled',

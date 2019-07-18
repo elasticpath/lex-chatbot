@@ -25,10 +25,35 @@ const TABLE_REGION = process.env.CACHE_REGION || 'us-west-2';
 const dynamoDB = new AWS.DynamoDB.DocumentClient({ region: TABLE_REGION });
 const TIME_TO_LIVE = 60; // In seconds
 
+// Used to post first DB entry upon token initialization, or to reset state of transaction.
+async function init(sessionId) {
+    // Time to live set to 1 minute after latest put request.
+    let time = Math.floor(Date.now() / 1000) + TIME_TO_LIVE;
+    let params = {
+        TableName : TABLE_NAME,
+        Item: {
+            responseId: sessionId,
+            ttl : time,
+            curResponse: {},
+            curProduct: {},
+            curProductIndex: 0,
+            isCart: false
+        }
+    };
+    try {
+        let data = await dynamoDB.put(params).promise();
+        return { statusCode: 200, body: JSON.stringify({ params, data }) };
+    } catch(error) {
+        return {
+            statusCode: 400,
+            error: `Could not post: ${error.stack}`
+        };
+    }
+}
+
 async function put(payload, sessionId) {
     // Time to live set to 1 minute after latest put request.
     let time = Math.floor(Date.now() / 1000) + TIME_TO_LIVE;
-    // console.log(`In DynamoPut: TTL ${time}`);
     let params = {
         TableName : TABLE_NAME,
         Item: {
@@ -76,5 +101,6 @@ async function fetch(sessionId) {
     }
 }
 
+module.exports.init = init;
 module.exports.put = put;
 module.exports.fetch = fetch;

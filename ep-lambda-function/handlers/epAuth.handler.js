@@ -19,32 +19,23 @@
  *
  */
 
-const lexResponses = require('../lexResponses');
 const cortex = require("../cortex");
 const cache = require('../dynamoCache');
+const lexResponses = require('../lexResponses');
 const cortexInstance = cortex.getCortexInstance();
 const { ElasticPathIntents } = require('../constants');
 
 // This Intent is responsible for handling initial token tracking and authentication.
 const EPAuthHandler = async function (intentRequest, callback) {
-    // Used to post first DB entry upon token initialization
-    const initialEntry = {
-        curResponse : {},
-        curProduct: {},
-        curProductIndex: 0,
-        isCart: false
-    }
-
     // 1. Gather resources from intentRequest
     let sessionAttributes = intentRequest.sessionAttributes || {};
     let slots = intentRequest.currentIntent.slots;
     let callingIntent = intentRequest.currentIntent.name;
-    let lexReply = "";
+    let lexReply;
     
     // 2. Check to see if and how the token will be supplied.
     if (callingIntent !== ElasticPathIntents.EP_AUTH) {
         // Another intent was called before a token was aquired
-        // NOTE - The sessionAttribute check in index.js is the only way this check would be true.
         lexReply = lexResponses.epAuth.REQUIRE_TOKEN;
     } else if (sessionAttributes.token) {
         // Already has a token
@@ -54,7 +45,7 @@ const EPAuthHandler = async function (intentRequest, callback) {
         sessionAttributes.token = slots.token;
         sessionAttributes.role = lexResponses.epAuth.REGISTERED;
         cortexInstance.token = sessionAttributes.token;
-        await cache.put(initialEntry, sessionAttributes.token);
+        await cache.init(sessionAttributes.token);
         lexReply = `Token received and set to ${sessionAttributes.token}`;
     } else {
         // Given a default token
@@ -64,13 +55,18 @@ const EPAuthHandler = async function (intentRequest, callback) {
         }
         sessionAttributes.token = cortexInstance.token;
         sessionAttributes.role = lexResponses.epAuth.PUBLIC;
-        await cache.put(initialEntry, sessionAttributes.token);
+        await cache.init(sessionAttributes.token);
         lexReply = lexResponses.epAuth.WELCOME;
     }
     
     // 4. Send confirmation with relevant case message.
-    callback(lexResponses.close(sessionAttributes, 'Fulfilled',
-    {'contentType': 'PlainText', 'content': lexReply}));
+    callback(
+        lexResponses.close(
+            sessionAttributes,
+            'Fulfilled',
+            {'contentType': 'PlainText', 'content': lexReply}
+        )
+    );
 };
 
 module.exports = EPAuthHandler;

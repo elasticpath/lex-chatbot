@@ -72,7 +72,7 @@ const GetCartHandler = async function (intentRequest, callback, sessionCart) {
     const sessionAttributes = intentRequest.sessionAttributes;
     const lexReply = await getCartMessage(intentRequest);
     
-    // Return response card if SKU_IMAGE_URL is provided. Otherwise, return plaintext.
+    // Return response card if it is required. Otherwise, return plaintext.
     if (process.env.SKU_IMAGES_URL && showResponseCard) {
         // Case that a response card should be displayed
         callback(lexResponses.closeResponse(

@@ -27,7 +27,7 @@ const RemoveFromCartHandler = async function (intentRequest, callback) {
     let sessionAttributes = intentRequest.sessionAttributes;
 
     let showResponseCard = false;
-    let lexReply = "";
+    let lexReply;
 
     // Gather product data for response callback
     let productPrice;
@@ -39,8 +39,8 @@ const RemoveFromCartHandler = async function (intentRequest, callback) {
     const reply = await cache.fetch(intentRequest.sessionAttributes.token);
 
     // Ensure reply is not undefined before removing.
-    if (!reply) {
-        lexReply = lexResponses.generalResponse.EXPIRED_SESSION;
+    if (!reply.response) {
+        lexReply = lexResponses.generalResponse.NOT_IN_CART;
     } else if (reply && reply.statusCode === 404) {
         lexReply = lexResponses.errorCodes.ERROR_404;
     } else if (reply && !reply.response.isCart) {
@@ -48,9 +48,8 @@ const RemoveFromCartHandler = async function (intentRequest, callback) {
     } else {
         try {
             // Get sku info number from current cart product
-            let curIndex = reply.response.curProductIndex;
+            productName = reply.response.curProduct._definition[0]['display-name'];
             let sku = reply.response.curProduct['_code'][0]['code'];
-            let productName = reply.response.curProduct._definition[0]['display-name'];
             let currentCart = await handler.handleGetCart(intentRequest);
 
             // If cart is empty, cannot remove. Else, remove by sku and confirm.
@@ -60,9 +59,8 @@ const RemoveFromCartHandler = async function (intentRequest, callback) {
                 // Prepare response card with new current item.
                 showResponseCard = true;
 
-                // 1. Get current cart item and save it's name before removal
-                let cartItem = await handler.handleGetCartItem(curIndex);
-                let removedName = cartItem['body']._item[0]._definition[0]['display-name'];
+                // 1. Save current product's name before removal
+                let removedName = productName;
 
                 // 2. Remove the item.
                 await handler.handleRemoveFromCart(sku);
@@ -70,12 +68,14 @@ const RemoveFromCartHandler = async function (intentRequest, callback) {
                 // 3. Get the updated cart for the cache.
                 currentCart = await handler.handleGetCart(intentRequest);
 
-                // 4. Check if cart is now empty
+                // 4. Check if cart is now empty after removal
                 if (currentCart['body']['_defaultcart'][0]['total-quantity'] <= 0) {
+                    // If cart is empty, the cache response is reset.
+                    cache.init(intentRequest.sessionAttributes.token);
                     lexReply = `${removedName} has been removed from your cart. Your cart is now empty.`;
                 } else {
                     // 5. If cart isn't empty, get the new item replaced and display.
-                    cartItem = await handler.handleGetCartItem(0);
+                    let cartItem = await handler.handleGetCartItem(0);
                     productName = cartItem['body']._item[0]._definition[0]['display-name'];
                     productQty = cartItem['body']['quantity'];
                     productPrice = cartItem['body']._item[0]._price[0]['list-price'][0].display + ` - Qty: ${productQty}`;

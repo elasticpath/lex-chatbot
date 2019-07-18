@@ -26,25 +26,34 @@ const CheckoutCartHandler = async function (intentRequest, callback) {
     const sessionAttributes = intentRequest.sessionAttributes;
     const checkoutResult = await handler.handleCheckoutCart(intentRequest);
 
-    let checkoutDesc = '';
+    let checkoutDesc;
     
     // Check for default cart status. If needinfo is returned, display debug message.
     if (checkoutResult['body']['monetary-total']) {
+        // Successful checkout.
     	const totalPrice = checkoutResult['body']['monetary-total'][0]['display'];
     	checkoutDesc = 'Checkout complete!  Total price is ' + totalPrice;
-    } else if (checkoutResult.body.type === 'needinfo'){
+    } else if(checkoutResult.body.id === 'cart.empty') {
+        // Catch an empty cart needinfo event.
+        checkoutDesc = `${checkoutResult['body']['debug-message']}`;
+    } else if (checkoutResult.body.type === 'needinfo') {
         // Check if the session is a REGISTERED or PUBLIC
         if (sessionAttributes.role == lexResponses.epAuth.REGISTERED) {
-            checkoutDesc = checkoutResult['body']['debug-message'];
+            checkoutDesc = `${checkoutResult['body']['debug-message']} ${lexResponses.generalResponse.ACCOUNT_MANAGEMENT}`;
         } else {
             checkoutDesc = lexResponses.generalResponse.PUBLIC_SERVICE;
         }
     } else {
-        checkoutDesc = lexResponses.generalResponse.EMPTY_CART;
+        checkoutDesc = lexResponses.generalResponse.EXPIRED_SESSION;
     }
 
-    callback(lexResponses.close(sessionAttributes, 'Fulfilled',
-    {'contentType': 'PlainText', 'content': `${checkoutDesc}`}));
+    callback(
+        lexResponses.close(
+            sessionAttributes,
+            'Fulfilled',
+            {'contentType': 'PlainText', 'content': `${checkoutDesc}`}
+        )
+    );
 };
 
 module.exports = CheckoutCartHandler;

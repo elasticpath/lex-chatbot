@@ -26,7 +26,7 @@ const cache = require('../dynamoCache');
 const AddToCartHandler = async function (intentRequest, callback) {
         const sessionAttributes = intentRequest.sessionAttributes;
         const reply = await cache.fetch(intentRequest.sessionAttributes.token);
-        let lexReply = "";
+        let lexReply;
         let product;
 
         // Check to see if cache returns a response.
@@ -53,7 +53,7 @@ const AddToCartHandler = async function (intentRequest, callback) {
     
         callback(
             lexResponses.close(
-                sessionAttributes, 
+                sessionAttributes,
                 'Fulfilled',
                 {"contentType": "PlainText", "content": lexReply}
             )

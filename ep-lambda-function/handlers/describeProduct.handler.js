@@ -34,13 +34,13 @@ async function getReply(currentCode) {
 const DescribeProductHandler = async function (intentRequest, callback) {
     const sessionAttributes = intentRequest.sessionAttributes;
     const reply = await cache.fetch(intentRequest.sessionAttributes.token);
-    let lexReply = "Product Description";
+    let lexReply;
     
     // Gather product data for callback
     let product;
     let productPrice;
     let productDesc;
-    let productName = "";
+    let productName;
     
     // 1. Check to see if there is a response from the cache
     if (reply.response) {
@@ -52,7 +52,7 @@ const DescribeProductHandler = async function (intentRequest, callback) {
         
         // 3. Error handling for response codes.
         if (reply === "" || reply.statusCode === 404) {
-             return lexResponses.generalResponse.INVALID_SEARCH;
+            return lexResponses.generalResponse.INVALID_SEARCH;
         }
         
         // 4. Assign it's name, description, and price from response
