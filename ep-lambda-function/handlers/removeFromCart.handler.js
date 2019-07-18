@@ -40,7 +40,7 @@ const RemoveFromCartHandler = async function (intentRequest, callback) {
 
     // Ensure reply is not undefined before removing.
     if (!reply.response) {
-        lexReply = lexResponses.generalResponse.NOT_IN_CART;
+        lexReply = lexResponses.generalResponse.EXPIRED_SESSION;
     } else if (reply && reply.statusCode === 404) {
         lexReply = lexResponses.errorCodes.ERROR_404;
     } else if (reply && !reply.response.isCart) {
