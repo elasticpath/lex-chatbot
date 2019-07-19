@@ -6,7 +6,7 @@
   },
   "resource": {
     "name": "EPConversationalInterface",
-    "version": "5",
+    "version": "6",
     "intents": [
       {
         "name": "PrevItemIntent",
@@ -71,16 +71,8 @@
         ]
       },
       {
-        "rejectionStatement": {
-          "messages": [
-            {
-              "contentType": "PlainText",
-              "content": "Okay. I won't add it to the cart."
-            }
-          ]
-        },
         "name": "AddToCartIntent",
-        "version": "3",
+        "version": "4",
         "sampleUtterances": [
           "Put it in my cart.",
           "Put {amount} in my cart.",
@@ -110,16 +102,7 @@
             "priority": 2,
             "name": "amount"
           }
-        ],
-        "confirmationPrompt": {
-          "messages": [
-            {
-              "contentType": "PlainText",
-              "content": "Would you like to add {amount} of the item to the cart?"
-            }
-          ],
-          "maxAttempts": 3
-        }
+        ]
       },
       {
         "name": "CheckoutCartIntent",
@@ -179,7 +162,7 @@
       },
       {
         "name": "DescribeProductIntent",
-        "version": "3",
+        "version": "4",
         "sampleUtterances": [
           "give me more info about the product",
           "tell me about them",
@@ -191,9 +174,43 @@
           "describe this item",
           "describe it",
           "what's that",
+          "what is this",
+          "what is that",
           "show me"
         ],
         "slots": []
+      },
+      {
+        "name": "ShowListedItemIntent",
+        "version": "1",
+        "sampleUtterances": [
+          "Show me item number {itemNo}",
+          "Show me item {itemNo}",
+          "Go to item {itemNo}",
+          "Go to {itemNo}",
+          "What was item number {itemNo}",
+          "What was item {itemNo}",
+          "What was {itemNo}",
+          "What's item {itemNo}"
+        ],
+        "slots": [
+          {
+            "sampleUtterances": [],
+            "slotType": "AMAZON.NUMBER",
+            "slotConstraint": "Required",
+            "valueElicitationPrompt": {
+              "messages": [
+                {
+                  "contentType": "PlainText",
+                  "content": "What item number?"
+                }
+              ],
+              "maxAttempts": 2
+            },
+            "priority": 1,
+            "name": "itemNo"
+          }
+        ]
       },
       {
         "name": "GetCartIntent",
@@ -211,7 +228,7 @@
       },
       {
         "name": "EPAuthIntent",
-        "version": "22",
+        "version": "24",
         "sampleUtterances": [
           "ep-auth {token}",
           "{token}",

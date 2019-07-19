@@ -26,6 +26,7 @@ const RemoveFromCartHandler = require('./handlers/removeFromCart.handler');
 const KeywordSearchHandler = require('./handlers/keywordSearch.handler');
 const NextItemHandler = require('./handlers/nextItem.handler');
 const PrevItemHandler = require('./handlers/prevItem.handler');
+const ShowListedItemHandler = require('./handlers/showListedItem.handler');
 const DescribeProductHandler = require('./handlers/describeProduct.handler');
 const CheckoutCartHandler = require('./handlers/checkoutCart.handler');
 
@@ -67,7 +68,8 @@ exports.handler = async (event, context, callback) => {
             case ElasticPathIntents.DESCRIBE_PRODUCT:
                 await DescribeProductHandler(event, (response) => {callback(null, response);});
                 break;
-            case ElasticPathIntents.DESCRIBE_STORE:
+            case ElasticPathIntents.SPECIFIC_ITEM:
+                await ShowListedItemHandler(event, (response) => {callback(null, response);});
                 break;
             case ElasticPathIntents.NEXT_ITEM:
                 await NextItemHandler(event, (response) => {callback(null, response);}); 
