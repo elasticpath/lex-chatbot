@@ -33,23 +33,27 @@ let button;
 // Used to ensure response cards aren't shown at end of list.
 let showResponseCard;
 
-const PrevItemHandler = async function (intentRequest, callback) {
+const ShowListedItemHandler = async function (intentRequest, callback) {
     showResponseCard = false;
     let sessionAttributes = intentRequest.sessionAttributes;
-
+    let targetItemNo = intentRequest.currentIntent.slots.itemNo;
+    
     let lexReply;
 
     const reply = await cache.fetch(intentRequest.sessionAttributes.token);
-    
+
     if (reply === "" || reply.statusCode === 404) {
         lexReply = lexResponses.errorCodes.ERROR_404;
     } else {
         try {
             const currentIndex = reply.response.curProductIndex;
+            const count = reply.response.curResponse.length;
 
             if (currentIndex !== null) {
-                const newIndex = currentIndex - 1;
-                if (newIndex >= 0) {
+                const newIndex = targetItemNo - 1;
+
+                // Ensure target index is within range of list
+                if (newIndex >= 0 && newIndex < count) {
                     showResponseCard = true;
                     const newItem = reply.response.curResponse[newIndex];
                     const currentName = newItem._definition[0]['display-name'];
@@ -57,9 +61,9 @@ const PrevItemHandler = async function (intentRequest, callback) {
                     const curResponse = reply.response.curResponse;
                     const curCart = reply.response.isCart;
 
-                    await handler.handlePrevItem(intentRequest, curResponse, newItem, newIndex, curCart);
+                    await handler.handleNextItem(intentRequest, curResponse, newItem, newIndex, curCart);
 
-                    // Build response-card based on if the cart is being displayed
+                    // Build response-card based on isCart return
                     if (!curCart) {
                         productName = newItem._definition[0]['display-name'];
 
@@ -81,9 +85,14 @@ const PrevItemHandler = async function (intentRequest, callback) {
                         productCode = cartItem['body']._item[0]._code[0][`code`];
                         button = lexResponses.generateButton(`Remove from cart`, `Remove this from my cart`);
                         lexReply = `Okay! Item number ${newIndex + 1} is: ${JSON.stringify(currentName)}. You have ${productQty} of them.`;
-                    }   
+                    }
                 } else {
-                    lexReply = lexResponses.list.START_OF_LIST;
+                    // Index was out of bounds. Create message based on how many items are in the list.
+                    if (count == 1) {
+                        lexReply = `There is only ${count} item on the list!`;
+                    } else {
+                        lexReply = `Please choose an item between 1 and ${count}.`;
+                    }
                 }
             } else {
                 lexReply = lexResponses.generalResponse.EMPTY_LIST;
@@ -120,4 +129,4 @@ const PrevItemHandler = async function (intentRequest, callback) {
     }
 };
 
-module.exports = PrevItemHandler;
+module.exports = ShowListedItemHandler;

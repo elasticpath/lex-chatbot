@@ -37,7 +37,7 @@ const NextItemHandler = async function (intentRequest, callback) {
     showResponseCard = false;
     let sessionAttributes = intentRequest.sessionAttributes;
     
-    let lexReply = "";
+    let lexReply;
 
     const reply = await cache.fetch(intentRequest.sessionAttributes.token);
     
