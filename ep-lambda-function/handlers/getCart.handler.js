@@ -50,6 +50,7 @@ async function getCartMessage (intentRequest) {
                 return lexResponses.generalResponse.EMPTY_CART;
             }
 
+            const count = response['body']['_defaultcart'][0]['_lineitems'][0]['_element'].length;
             const totalPrice = response['body']['_defaultcart'][0]['_total'][0]['cost'][0]['display'];
             product = response['body']['_defaultcart'][0]['_lineitems'][0]['_element'][0]['_item'][0];
 
@@ -60,7 +61,7 @@ async function getCartMessage (intentRequest) {
             productCode = product._code[0][`code`];
             button = lexResponses.generateButton(`Remove from cart`, `Remove this from my cart`);
             showResponseCard = true;
-            return `You have ${totalQuant} items in cart. Total cost is: ${totalPrice}. The first item is ${productName}. You have ${productQty} of them.`;
+            return `You have ${count} items in cart. Total cost is: ${totalPrice}. The first item is ${productName}. You have ${productQty} of them.`;
         } catch(e) {
             console.error(e);
             return lexResponses.generalResponse.EXPIRED_SESSION;
