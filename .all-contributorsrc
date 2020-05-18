@@ -1,0 +1,42 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "shaunmaharaj",
+      "name": "Shaun Maharaj",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/39800563?v=4",
+      "profile": "https://github.com/shaunmaharaj",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "KurtisLawson",
+      "name": "Kurtis Lawson",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/35927596?v=4",
+      "profile": "https://github.com/KurtisLawson",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "parthpp",
+      "name": "Parth Patel",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/3318934?v=4",
+      "profile": "https://github.com/parthppp",
+      "contributions": [
+        "code"
+      ]
+    },
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "lex-chatbot",
+  "projectOwner": "elasticpath",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
