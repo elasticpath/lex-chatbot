@@ -46,6 +46,7 @@ module.exports.ElasticPathIntents = {
     REMOVE_FROM_CART: 'RemoveFromCartIntent',
     REMOVE_FROM_WISHLIST: 'RemoveFromWishlistIntent',
     SPECIFIC_ITEM: 'ShowListedItemIntent',
+    REORDER: 'ReorderIntent'
 };
 
 module.exports.Errors = {

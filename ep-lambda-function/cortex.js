@@ -29,8 +29,9 @@ const USERNAME = process.env.USERNAME || "";
 const PASSWORD = process.env.PASSWORD || "";
 
 function Cortex(baseUrl, token) {
-    this.cortexBaseUrl = baseUrl;
+    this.cortexBaseUrl = baseUrl || process.env.CORTEX_URL;
     this.token = token;
+    console.log(`Creating cortex client baseUrl: ${this.cortexBaseUrl}, token: ${this.token}`);
 }
 
 Cortex.prototype.requestToken = function () {
@@ -365,6 +366,111 @@ Cortex.prototype.cortexCheckout = function () {
             }
             return this.cortexPost(`${purchaseForm.links[0].href}?followlocation`);
         });
+}
+
+Cortex.prototype.getLastOrder = async function() {
+    const zooms = [
+        'defaultprofile:purchases:element:lineitems:element',
+        'defaultprofile:purchases:element:lineitems:element:item:definition',
+        'defaultprofile:purchases:element:lineitems:element:item:code',
+        'defaultprofile:purchases:element:lineitems:element:item:availability',
+        'defaultprofile:purchases:element:lineitems:element:item:addtocartform',
+        'defaultprofile:purchases:element:lineitems:element:item:recommendations:replacement:element:definition',
+        'defaultprofile:purchases:element:lineitems:element:item:recommendations:replacement:element:code',
+        'defaultprofile:purchases:element:lineitems:element:item:recommendations:replacement:element:addtocartform',
+    ];
+
+    const root = await this.cortexGet(`${this.cortexBaseUrl}?zoom=${zooms.join(',')}`);
+
+    if (!root ||
+        !root._defaultprofile ||
+        !root._defaultprofile[0] ||
+        !root._defaultprofile[0]._purchases ||
+        !root._defaultprofile[0]._purchases[0] ||
+        !root._defaultprofile[0]._purchases[0]._element ||
+        !root._defaultprofile[0]._purchases[0]._element[0]
+    ) {
+        return null;
+    }
+
+    return root._defaultprofile[0]._purchases[0]._element[0];
+}
+
+Cortex.prototype.createTempCart = async function() {
+    const zooms = [
+        'carts:createcartform',
+    ];
+
+    const root = await this.cortexGet(`${this.cortexBaseUrl}/?zoom=${zooms.join(',')}`);
+
+    const createCartFormUri = root._carts[0]._createcartform[0].self.uri;
+    const cartName = `cart_${Math.random().toString().substr(2)}`;
+
+    await this.cortexPost(`${this.cortexBaseUrl}${createCartFormUri}`, { descriptor: { name: cartName } });
+
+    return cartName;
+}
+
+Cortex.prototype.getCartDetails = async function(cartName) {
+    const zooms = [
+        'carts:element',
+        'carts:element:descriptor',
+        'carts:element:additemstocartform',
+        'carts:element:order',
+        'carts:element:order:purchaseform',
+    ];
+
+    const root = await this.cortexGet(`${this.cortexBaseUrl}/?zoom=${zooms.join(',')}`);
+
+    const cart = root._carts[0]._element.filter(e => e._descriptor[0].name === cartName)[0];
+
+    return cart;
+}
+
+Cortex.prototype.repeatOrder = async function(cartName, availableItems, replaceableItems) {
+    let cart = await this.getCartDetails(cartName);
+    const addtoCartUri = cart._additemstocartform[0].self.uri;
+
+    const availableCodesQtys = availableItems.map(e => ({
+            code: e._item[0]._code[0].code,
+            quantity: e.quantity
+        }));
+
+    const replaceableCodesQtys = replaceableItems.map(e => ({
+            code: e._item[0]._recommendations[0]._replacement[0]._element[0]._code[0].code,
+            quantity: e.quantity
+        }));
+
+    const codesAndQtys = [
+        ...availableCodesQtys,
+        ...replaceableCodesQtys,
+    ];
+
+    await this.cortexPost(`${this.cortexBaseUrl}${addtoCartUri}`, { items: codesAndQtys });
+
+    cart = await this.getCartDetails(cartName);
+    const purchaseUri = cart._order[0]._purchaseform[0].self.uri;
+    await this.cortexPost(`${this.cortexBaseUrl}${purchaseUri}`, {});
+}
+
+Cortex.prototype.deleteNonDefaultCarts = async function() {
+    const zooms = [
+        'carts:element',
+        'carts:element:descriptor',
+        'carts:element:additemstocartform',
+        'carts:element:order',
+        'carts:element:order:purchaseform',
+    ];
+
+    const root = await this.cortexGet(`${this.cortexBaseUrl}/?zoom=${zooms.join(',')}`);
+
+    const nonDefaultCarts = root._carts[0]._element.filter(c => c._descriptor[0].default === undefined);
+    console.log(`Found ${nonDefaultCarts.length} non-default cart(s)`);
+
+    for (const cart of nonDefaultCarts) {
+        console.log(`Deleting cart ${cart.self.uri}`);
+        await this.cortexDelete(`${this.cortexBaseUrl}${cart.self.uri}`);
+    }
 }
 
 module.exports = Cortex;

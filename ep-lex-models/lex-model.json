@@ -6,11 +6,18 @@
   },
   "resource": {
     "name": "EPConversationalInterface",
-    "version": "6",
+    "version": "7",
     "intents": [
       {
         "name": "PrevItemIntent",
         "version": "4",
+        "fulfillmentActivity": {
+          "codeHook": {
+            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
+            "messageVersion": "1.0"
+          },
+          "type": "CodeHook"
+        },
         "sampleUtterances": [
           "show me the last item",
           "what was the last item",
@@ -43,6 +50,13 @@
       {
         "name": "RemoveFromCartIntent",
         "version": "3",
+        "fulfillmentActivity": {
+          "codeHook": {
+            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
+            "messageVersion": "1.0"
+          },
+          "type": "CodeHook"
+        },
         "sampleUtterances": [
           "remove this item from my cart",
           "remove this from my cart",
@@ -55,6 +69,7 @@
           {
             "sampleUtterances": [],
             "slotType": "AMAZON.VideoGame",
+            "obfuscationSetting": "NONE",
             "slotConstraint": "Optional",
             "valueElicitationPrompt": {
               "messages": [
@@ -73,6 +88,13 @@
       {
         "name": "AddToCartIntent",
         "version": "4",
+        "fulfillmentActivity": {
+          "codeHook": {
+            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
+            "messageVersion": "1.0"
+          },
+          "type": "CodeHook"
+        },
         "sampleUtterances": [
           "Put it in my cart.",
           "Put {amount} in my cart.",
@@ -89,6 +111,7 @@
           {
             "sampleUtterances": [],
             "slotType": "AMAZON.NUMBER",
+            "obfuscationSetting": "NONE",
             "slotConstraint": "Required",
             "valueElicitationPrompt": {
               "messages": [
@@ -107,6 +130,13 @@
       {
         "name": "CheckoutCartIntent",
         "version": "2",
+        "fulfillmentActivity": {
+          "codeHook": {
+            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
+            "messageVersion": "1.0"
+          },
+          "type": "CodeHook"
+        },
         "sampleUtterances": [
           "I'd like to checkout",
           "checkout my cart",
@@ -117,6 +147,13 @@
       {
         "name": "NextItemIntent",
         "version": "3",
+        "fulfillmentActivity": {
+          "codeHook": {
+            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
+            "messageVersion": "1.0"
+          },
+          "type": "CodeHook"
+        },
         "sampleUtterances": [
           "show me something else",
           "what else do you have",
@@ -130,7 +167,14 @@
       },
       {
         "name": "KeywordSearchIntent",
-        "version": "7",
+        "version": "8",
+        "fulfillmentActivity": {
+          "codeHook": {
+            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
+            "messageVersion": "1.0"
+          },
+          "type": "CodeHook"
+        },
         "sampleUtterances": [
           "what do you have for {searchKeyword}",
           "do you carry {searchKeyword}",
@@ -139,12 +183,14 @@
           "show me {searchKeyword}",
           "find me {searchKeyword}",
           "find {searchKeyword}",
-          "search for {searchKeyword}"
+          "search for {searchKeyword}",
+          "search {searchKeyword}"
         ],
         "slots": [
           {
             "sampleUtterances": [],
             "slotType": "AMAZON.VideoGame",
+            "obfuscationSetting": "NONE",
             "slotConstraint": "Required",
             "valueElicitationPrompt": {
               "messages": [
@@ -163,6 +209,13 @@
       {
         "name": "DescribeProductIntent",
         "version": "4",
+        "fulfillmentActivity": {
+          "codeHook": {
+            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
+            "messageVersion": "1.0"
+          },
+          "type": "CodeHook"
+        },
         "sampleUtterances": [
           "give me more info about the product",
           "tell me about them",
@@ -183,6 +236,13 @@
       {
         "name": "ShowListedItemIntent",
         "version": "1",
+        "fulfillmentActivity": {
+          "codeHook": {
+            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
+            "messageVersion": "1.0"
+          },
+          "type": "CodeHook"
+        },
         "sampleUtterances": [
           "Show me item number {itemNo}",
           "Show me item {itemNo}",
@@ -197,6 +257,7 @@
           {
             "sampleUtterances": [],
             "slotType": "AMAZON.NUMBER",
+            "obfuscationSetting": "NONE",
             "slotConstraint": "Required",
             "valueElicitationPrompt": {
               "messages": [
@@ -215,6 +276,13 @@
       {
         "name": "GetCartIntent",
         "version": "3",
+        "fulfillmentActivity": {
+          "codeHook": {
+            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
+            "messageVersion": "1.0"
+          },
+          "type": "CodeHook"
+        },
         "sampleUtterances": [
           "Go to the cart.",
           "Go to my cart.",
@@ -229,6 +297,13 @@
       {
         "name": "EPAuthIntent",
         "version": "24",
+        "fulfillmentActivity": {
+          "codeHook": {
+            "uri": "arn:aws:lambda:us-west-2:648265802301:function:EPConversationalLambda",
+            "messageVersion": "1.0"
+          },
+          "type": "CodeHook"
+        },
         "sampleUtterances": [
           "ep-auth {token}",
           "{token}",
@@ -239,6 +314,7 @@
             "sampleUtterances": [],
             "slotType": "AuthToken",
             "slotTypeVersion": "2",
+            "obfuscationSetting": "NONE",
             "slotConstraint": "Optional",
             "valueElicitationPrompt": {
               "messages": [
@@ -278,7 +354,7 @@
       "messages": [
         {
           "contentType": "PlainText",
-          "content": "Sorry, can you please repeat that?"
+          "content": "I didn't understand that command. Use the Help command for some guidance."
         }
       ],
       "maxAttempts": 5
@@ -287,9 +363,11 @@
       "messages": [
         {
           "contentType": "PlainText",
-          "content": "Sorry, I could not understand. Goodbye."
+          "content": "Sorry, I could not understand. Please try again."
         }
       ]
-    }
+    },
+    "detectSentiment": false,
+    "enableModelImprovements": false
   }
 }

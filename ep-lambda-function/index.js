@@ -29,33 +29,65 @@ const PrevItemHandler = require('./handlers/prevItem.handler');
 const ShowListedItemHandler = require('./handlers/showListedItem.handler');
 const DescribeProductHandler = require('./handlers/describeProduct.handler');
 const CheckoutCartHandler = require('./handlers/checkoutCart.handler');
+const ReorderHandler = require('./handlers/reorder.handler');
 
 const { ElasticPathIntents } = require('./constants');
 const sessionCart = [];
 
 // Used for token tracking
 const cortex = require("./cortex");
-const cortexInstance = cortex.getCortexInstance();
+// const cortexInstance = cortex.getCortexInstance();
 
 // The process that will direct Intent Invocations to their respective handler.
 exports.handler = async (event, context, callback) => {
+
+    console.log();
+    console.log();
+    console.log(`----------------- ${event.currentIntent.name} -----------------`);
+    console.log();
+    console.log(JSON.stringify(event, null, 2));
+    console.log();
+    console.log();
+
     try {
         // 1. Gather information from the current session.
         let sessionAttributes = event.sessionAttributes || {};
-        
-        // 2. Check if there is a token. If not, run EPAuthHandler.
-        if (!sessionAttributes.token) {
-            await EPAuthHandler(event, (response) => {callback(null, response);});
-        }
+
+        // // 2. Check if there is a token. If not, run EPAuthHandler.
+        // if (!sessionAttributes.token) {
+        //     await EPAuthHandler(event, (response) => {callback(null, response);});
+        // }
         
         // 3. Ensure the correct token is being used by the following intent.
-        cortexInstance.verifyToken(sessionAttributes.token);
+        // cortexInstance.verifyToken(sessionAttributes.token);
         
         // 4. Determine appropriate Intent Invocation.
         switch (event.currentIntent.name) {
-            case ElasticPathIntents.EP_AUTH:
-                await EPAuthHandler(event, (response) => {callback(null, response);});
+            case 'AddNumbers':
+                const oldSum = parseInt(sessionAttributes.sum) || 0;
+                const numValue = parseInt(event.currentIntent.slots.numValue) || 0;
+                const newSum = oldSum + numValue;
+
+                callback(null, {
+                    sessionAttributes: {
+                        ...sessionAttributes,
+                        sum: newSum
+                    },
+                    dialogAction: {
+                        type: 'Close',
+                        fulfillmentState: 'Fulfilled',
+                        message: {
+                            contentType: 'PlainText',
+                            content: `Old sum was ${oldSum} and we added ${numValue} for a total of ${newSum} !!!`
+                        }
+                    }
+                });
+
                 break;
+
+            case ElasticPathIntents.EP_AUTH:
+                const authResponse = await EPAuthHandler(event);
+                return callback(null, authResponse);
             case ElasticPathIntents.KEYWORD_SEARCH:
                 await KeywordSearchHandler(event, (response) => {callback(null, response);});
                 break;
@@ -82,6 +114,10 @@ exports.handler = async (event, context, callback) => {
                 break;
             case ElasticPathIntents.REMOVE_FROM_CART:
                 await RemoveFromCartHandler(event, (response) => {callback(null, response);}, sessionCart);
+                break;
+            case ElasticPathIntents.REORDER:
+                const reorderResponse = await ReorderHandler(event);
+                return callback(null, reorderResponse);
             default:
                 break;
         }     
