@@ -26,17 +26,24 @@ const cortexInstance = cortex.getCortexInstance();
 const { ElasticPathIntents } = require('../constants');
 
 // This Intent is responsible for handling initial token tracking and authentication.
-const EPAuthHandler = async function (intentRequest, callback) {
+const EPAuthHandler = async function (intentRequest) {
     // 1. Gather resources from intentRequest
     let sessionAttributes = intentRequest.sessionAttributes || {};
     let slots = intentRequest.currentIntent.slots;
     let callingIntent = intentRequest.currentIntent.name;
+    const textParts = (intentRequest.inputTranscript || '').split(' ');
     let lexReply;
     
     // 2. Check to see if and how the token will be supplied.
     if (callingIntent !== ElasticPathIntents.EP_AUTH) {
         // Another intent was called before a token was aquired
         lexReply = lexResponses.epAuth.REQUIRE_TOKEN;
+    } else if (textParts.length >= 2) {
+        sessionAttributes.token = textParts[1];
+        sessionAttributes.epToken = textParts[1];
+        sessionAttributes.role = lexResponses.epAuth.REGISTERED;
+        cortexInstance.token = sessionAttributes.token;
+        lexReply = lexResponses.epAuth.WELCOME;
     } else if (sessionAttributes.token) {
         // Already has a token
         lexReply = lexResponses.epAuth.GREETINGS;
@@ -58,15 +65,20 @@ const EPAuthHandler = async function (intentRequest, callback) {
         await cache.init(sessionAttributes.token);
         lexReply = lexResponses.epAuth.WELCOME;
     }
-    
     // 4. Send confirmation with relevant case message.
-    callback(
-        lexResponses.close(
-            sessionAttributes,
-            'Fulfilled',
-            {'contentType': 'PlainText', 'content': lexReply}
-        )
-    );
+    const callBackResponse = {
+        sessionAttributes,
+        dialogAction: {
+            type: 'Close',
+            fulfillmentState: 'Fulfilled',
+            message: {
+                contentType: 'PlainText',
+                content: lexReply
+            }
+        }
+    };
+
+    return callBackResponse;
 };
 
 module.exports = EPAuthHandler;

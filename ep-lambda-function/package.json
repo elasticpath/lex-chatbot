@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "description": "Elastic Path Reference Lex Model",
   "scripts": {
-    "start": "./node_modules/.bin/lex-model-local"
+    "start": "./node_modules/.bin/lex-model-local",
+    "deploy": "zip /tmp/lambda.zip * -r -q && aws lambda update-function-code --function-name EPConversationalLambda --zip-file fileb:///tmp/lambda.zip"
   },
   "dependencies": {
+    "aws-sdk": "^2.762.0",
+    "lodash": ">=4.17.13",
     "request": "^2.87.0",
-    "request-promise-native": "^1.0.5",
-    "lodash": ">=4.17.13"
+    "request-promise-native": "^1.0.5"
   },
   "devDependencies": {
     "alexa-skill-local": "^1.3.0",
