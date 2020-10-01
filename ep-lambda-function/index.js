@@ -30,6 +30,7 @@ const ShowListedItemHandler = require('./handlers/showListedItem.handler');
 const DescribeProductHandler = require('./handlers/describeProduct.handler');
 const CheckoutCartHandler = require('./handlers/checkoutCart.handler');
 const ReorderHandler = require('./handlers/reorder.handler');
+const ShowLastOrderHandler = require('./handlers/showLastOrder.handler');
 
 const { ElasticPathIntents } = require('./constants');
 const sessionCart = [];
@@ -40,13 +41,10 @@ const cortex = require("./cortex");
 
 // The process that will direct Intent Invocations to their respective handler.
 exports.handler = async (event, context, callback) => {
-
-    console.log();
     console.log();
     console.log(`----------------- ${event.currentIntent.name} -----------------`);
     console.log();
     console.log(JSON.stringify(event, null, 2));
-    console.log();
     console.log();
 
     try {
@@ -57,34 +55,12 @@ exports.handler = async (event, context, callback) => {
         // if (!sessionAttributes.token) {
         //     await EPAuthHandler(event, (response) => {callback(null, response);});
         // }
-        
+
         // 3. Ensure the correct token is being used by the following intent.
         // cortexInstance.verifyToken(sessionAttributes.token);
         
         // 4. Determine appropriate Intent Invocation.
         switch (event.currentIntent.name) {
-            case 'AddNumbers':
-                const oldSum = parseInt(sessionAttributes.sum) || 0;
-                const numValue = parseInt(event.currentIntent.slots.numValue) || 0;
-                const newSum = oldSum + numValue;
-
-                callback(null, {
-                    sessionAttributes: {
-                        ...sessionAttributes,
-                        sum: newSum
-                    },
-                    dialogAction: {
-                        type: 'Close',
-                        fulfillmentState: 'Fulfilled',
-                        message: {
-                            contentType: 'PlainText',
-                            content: `Old sum was ${oldSum} and we added ${numValue} for a total of ${newSum} !!!`
-                        }
-                    }
-                });
-
-                break;
-
             case ElasticPathIntents.EP_AUTH:
                 const authResponse = await EPAuthHandler(event);
                 return callback(null, authResponse);
@@ -118,6 +94,9 @@ exports.handler = async (event, context, callback) => {
             case ElasticPathIntents.REORDER:
                 const reorderResponse = await ReorderHandler(event);
                 return callback(null, reorderResponse);
+            case ElasticPathIntents.SHOW_LAST_ORDER:
+                const showLastOrderResponse = await ShowLastOrderHandler(event);
+                return callback(null, showLastOrderResponse);
             default:
                 break;
         }     
